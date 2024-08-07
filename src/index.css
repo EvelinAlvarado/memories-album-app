@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Karla";
+    src: url(/fonts/Karla/Karla-VariableFont_wght.ttf) format("truetype");
+  }
+  html {
+    background-color: #f6f6f6;
+    font-family: "karla", "Montserrat";
+  }
+}
+
+/* Reusable component styles */
+@layer components {
+  /* Custom classes for buttons */
+}
+
+/* Here you can add additional utilities that are not widely reused */
+@layer utilities {
+}
