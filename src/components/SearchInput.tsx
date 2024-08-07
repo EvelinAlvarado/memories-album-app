@@ -9,7 +9,7 @@ export const SearchInput = () => {
       <input
         className="rounded-md px-9 py-3 border-transparent focus:outline-none focus:border-tag1 placeholder-gray-400 transition-all duration-300 w-full"
         placeholder="Search..."
-        required=""
+        /* required="" */
         type="text"
       />
       <button

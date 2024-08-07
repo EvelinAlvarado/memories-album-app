@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LuHome, LuSettings2, LuGrid, LuUserCircle } from "react-icons/lu";
+import { LuHome, LuGrid, LuUserCircle } from "react-icons/lu";
 
 export const Navbar = () => {
   return (
