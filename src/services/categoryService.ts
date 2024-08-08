@@ -10,7 +10,7 @@ const fetchCategories = async (): Promise<Category[]> => {
     return response.data;
   } catch (error) {
     console.log("Error fetching categories: ", error);
-    throw error;
+    throw new Error("Failed to fetch categories.");
   }
 };
 
@@ -26,21 +26,19 @@ const createCategory = async (name: string): Promise<Category> => {
     return response.data;
   } catch (error) {
     console.error("Error creating category", error);
-    throw error;
+    throw new Error("Failed to create a Category.");
   }
 };
 
 // Function to update category
 const updateCategory = async (category: Category): Promise<Category> => {
   try {
-    const response = await api.put(`/categories/${category.id}`, {
-      name: category.name,
-    });
+    const response = await api.put(`/categories/${category.id}`, category);
     console.log(response.status, response.data);
     return response.data;
   } catch (error) {
     console.error("Error updating category", error);
-    throw error;
+    throw new Error("Failed to update category.");
   }
 };
 
@@ -56,7 +54,7 @@ const deleteCategory = async (id: string): Promise<boolean> => {
     return isDeleted;
   } catch (error) {
     console.error("Error deleting category", error);
-    throw error;
+    throw new Error("Failed to delete a Category.");
   }
 };
 
