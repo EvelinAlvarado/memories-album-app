@@ -33,7 +33,9 @@ const createCategory = async (name: string): Promise<Category> => {
 // Function to update category
 const updateCategory = async (category: Category): Promise<Category> => {
   try {
-    const response = await api.put(`/categories/${category.id}`);
+    const response = await api.put(`/categories/${category.id}`, {
+      name: category.name,
+    });
     console.log(response.status, response.data);
     return response.data;
   } catch (error) {
@@ -47,7 +49,11 @@ const deleteCategory = async (id: string): Promise<boolean> => {
   try {
     console.log("Delete category: ", id);
     const response = await api.delete(`/categories/${id}`);
-    return response.status === 200;
+    const isDeleted = response.status === 200;
+    if (isDeleted) {
+      console.log("Category deleted successfully");
+    }
+    return isDeleted;
   } catch (error) {
     console.error("Error deleting category", error);
     throw error;
