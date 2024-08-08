@@ -17,12 +17,12 @@ interface CategoryProviderProps {
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
   const [categories, setCategories] = useState<Category[]>([]);
 
-  const url = "http://localhost:3000";
+  const baseUrl = "http://localhost:3000";
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${url}/categories`);
+        const response = await axios.get(`${baseUrl}/categories`);
         console.log(response);
         setCategories(response.data);
       } catch (error) {
