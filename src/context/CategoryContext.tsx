@@ -78,10 +78,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
           cat.id === updateCategory.id ? updateCategory : cat
         )
       );
-      console.log(
-        "Categories after to updateCategory function: ",
-        setCategories
-      );
+      console.log("Categories after to updateCategory function: ", categories);
     } catch (error) {
       console.error("Failed to update category in context: ", error);
     }
@@ -97,7 +94,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       );
       console.log(
         "Categories after delete a Category in context: ",
-        setCategories
+        categories
       );
     } catch (error) {
       console.error("Failed to delete category in context:", error);
