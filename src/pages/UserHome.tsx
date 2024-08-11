@@ -11,7 +11,7 @@ export const UserHome = () => {
     navigate("/image-form");
   };
   return (
-    <div className="h-screen flex flex-col my-8 gap-8">
+    <div className="h-full flex flex-col pt-8 gap-8 overflow-auto">
       <header className="flex flex-row justify-between px-6">
         <div className="leading-tight">
           <p className="text-[26px] text-left ">Hi, Name</p>
@@ -35,7 +35,7 @@ export const UserHome = () => {
           <CategoryList />
         </div>
         {/* react slick use responsive and center mode */}
-        <div className="h-full mb-10">
+        <div className="h-full">
           <ImageCarousel />
         </div>
       </main>

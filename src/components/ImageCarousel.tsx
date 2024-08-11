@@ -1,5 +1,8 @@
 import Slider from "react-slick";
+import { LuArrowUpRight } from "react-icons/lu";
 import { useImageCard } from "../context/useContexts";
+import { ButtonCustom } from "./ButtonCustom";
+import { useNavigate } from "react-router-dom";
 
 // Helper function to generate unique random indices
 const getRandomIndices = (length: number, count: number): number[] => {
@@ -22,6 +25,7 @@ const imgDefault = [
 
 export const ImageCarousel = () => {
   const { imagesCards } = useImageCard();
+  const navigate = useNavigate();
   // Number of random images you want to display
   const numberOfRandomImages = 5;
   // Generate unique random indices
@@ -29,6 +33,11 @@ export const ImageCarousel = () => {
     imagesCards.length > 0
       ? getRandomIndices(imagesCards.length, numberOfRandomImages)
       : [];
+
+  // Function to handle the navigation on arrow click
+  const handleClickArrow = (id: string) => {
+    navigate(`/gallery/${id}`);
+  };
 
   // Slider settings
   const settings = {
@@ -74,12 +83,26 @@ export const ImageCarousel = () => {
             ))
           : randomIndices.map((index) => (
               <div key={imagesCards[index].id} className="h-full px-2">
-                <div className="h-full flex justify-center items-center">
+                <div className="h-full flex justify-center items-center relative">
                   <img
-                    className="rounded-lg h-[calc(100vh-350px)] w-full object-cover"
+                    className="rounded-lg h-[calc(100vh-360px)] w-full object-cover"
                     src={imagesCards[index].image}
                     alt={imagesCards[index].title}
                   />
+                  <div className="absolute top-0 right-0">
+                    <ButtonCustom
+                      nameButton={LuArrowUpRight}
+                      textSize="text-[25px]"
+                      textColor="text-whiteCustom"
+                      onClickButton={() =>
+                        handleClickArrow(imagesCards[index].id)
+                      }
+                      bgColor="bg-transparent"
+                      hoverBgColor="bg-black/15"
+                      paddingX="px-1"
+                      paddingY="py-1"
+                    />
+                  </div>
                 </div>
               </div>
             ))}

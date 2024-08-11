@@ -3,7 +3,8 @@ import { LuHome, LuGrid, LuUserCircle } from "react-icons/lu";
 
 export const Navbar = () => {
   return (
-    <nav className="flex justify-center fixed bottom-0 right-0 px-6 w-full">
+    /* whithout fixed */
+    <nav className="flex justify-center bottom-0 right-0 px-6 w-full">
       <ul className="flex flex-row w-full justify-between ">
         <li className="p-4 flex items-center justify-center text-black rounded-xl hover:bg-black/15 active:scale-95 transform transition duration-300">
           <Link to="/user-home">

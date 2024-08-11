@@ -18,7 +18,7 @@ export const FilterCategories = () => {
   return (
     <>
       <button
-        className="p-4 flex items-center justify-center text-black rounded-xl hover:bg-black/15 active:scale-95 transform transition duration-300"
+        className="p-3 flex items-center justify-center text-black rounded-xl hover:bg-black/15 active:scale-95 transform transition duration-300"
         aria-describedby={id}
         onClick={handleClick}
       >

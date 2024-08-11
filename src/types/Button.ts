@@ -6,6 +6,7 @@ export interface Button {
   textSize?: string;
   bgColor?: string;
   paddingY?: string;
+  paddingX?: string;
   textColor?: string;
   hoverBgColor?: string;
   onClickButton?: (event?: React.MouseEvent<HTMLButtonElement>) => void;

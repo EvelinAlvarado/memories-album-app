@@ -23,7 +23,7 @@ export const User = () => {
         </button>
       </div>
       <div className="flex flex-row justify-between items-center mt-8">
-        <p>Out</p>
+        <p>Logout</p>
         <button onClick={handleClickOut} className="p-4 text-lg">
           <LuLogOut />
         </button>

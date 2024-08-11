@@ -7,6 +7,7 @@ interface ButtonProps {
   textSize?: string;
   bgColor?: string;
   paddingY?: string;
+  paddingX?: string;
   textColor?: string;
   hoverBgColor?: string;
   onClickButton?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -18,6 +19,7 @@ export const ButtonCustom = ({
   textSize = "text-[22px]",
   bgColor = "bg-black",
   paddingY = "py-2.5",
+  paddingX = "px-3.5",
   textColor = "text-white",
   hoverBgColor = "bg-black/80",
   onClickButton,
@@ -26,7 +28,7 @@ export const ButtonCustom = ({
     <button
       type={buttonType}
       onClick={onClickButton}
-      className={`w-full items-center justify-center rounded-2xl ${bgColor} px-3.5 ${paddingY} ${textSize} font-light leading-7 ${textColor} hover:${hoverBgColor} active:scale-95 font-light w-max`}
+      className={`w-full items-center justify-center rounded-2xl ${bgColor} ${paddingX} ${paddingY} ${textSize} font-light leading-7 ${textColor} hover:${hoverBgColor} active:scale-95 font-light w-max`}
     >
       {typeof nameButton === "string"
         ? nameButton

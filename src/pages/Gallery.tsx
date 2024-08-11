@@ -13,15 +13,15 @@ export const Gallery = () => {
     navigate("/image-form");
   };
   return (
-    <div className="h-screen flex flex-col">
-      <div className="flex flex-row justify-between my-4 mx-4">
+    <div className="h-full flex flex-col">
+      <div className="flex flex-row justify-between mt-4 mb-2 mx-4">
         <div className="flex items-center">
           {" "}
           {/* fixed z-1 */}
           <FilterCategories />
           <p className="ml-4 text-[24px]">All Photos</p>
         </div>
-        <div className="w-20 h-full my-auto text-right">
+        <div className="w-20 my-auto text-right overflow-auto">
           <ButtonCustom
             onClickButton={handleClick}
             nameButton={LuImagePlus}

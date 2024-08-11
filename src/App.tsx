@@ -7,6 +7,7 @@ import { UserHome } from "./pages/UserHome";
 import { Layout } from "./components/Layout";
 import { ImageForm } from "./components/ImageForm";
 import { ImageCard } from "./pages/ImageCard";
+import { Image } from "./pages/Image";
 function App() {
   return (
     <div className="h-screen">
@@ -18,7 +19,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/user-home" element={<UserHome />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route path="/gallery/:id" element={<ImageCard />} />
+          <Route path="/gallery/:imageId" element={<ImageCard />} />
+          <Route path="/gallery/:imageId/image" element={<Image />} />
           <Route path="/image-form" element={<ImageForm />} />
           <Route path="/user" element={<User />} />
         </Route>
