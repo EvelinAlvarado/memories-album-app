@@ -3,14 +3,32 @@ import { Checkbox, FormControlLabel, FormGroup, Popover } from "@mui/material";
 import { useState } from "react";
 import { useCategoryList } from "../context/useContexts";
 
-export const FilterCategories = () => {
+interface FilterCategoriesProps {
+  onFilterChange: (selectedCategories: string[]) => void;
+}
+
+export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
   const { categories } = useCategoryList();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCheckboxChange = (categoryId: string) => {
+    setSelectedCategories((prevSelected) => {
+      const isSelected = prevSelected.includes(categoryId);
+      const updatedSelected = isSelected
+        ? prevSelected.filter((id) => id !== categoryId)
+        : [...prevSelected, categoryId];
+
+      onFilterChange(updatedSelected); // Pass the selected categories up to the parent component
+      return updatedSelected;
+    });
   };
 
   const open = Boolean(anchorEl);
@@ -39,7 +57,12 @@ export const FilterCategories = () => {
             {categories.map((category) => (
               <FormControlLabel
                 key={category.id}
-                control={<Checkbox />}
+                control={
+                  <Checkbox
+                    checked={selectedCategories.includes(category.id)}
+                    onChange={() => handleCheckboxChange(category.id)}
+                  />
+                }
                 label={category.name}
               />
             ))}

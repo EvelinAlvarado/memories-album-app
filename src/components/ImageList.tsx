@@ -2,11 +2,16 @@ import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
-import { useImageCard } from "../context/useContexts";
+// import { useImageCard } from "../context/useContexts";
+import { ImageCard } from "../types/ImageCard";
 
-export const MasonryImageList = () => {
-  const { imagesCards } = useImageCard();
-  const reversedImages = [...imagesCards].reverse();
+interface MasonryImageListProps {
+  images: ImageCard[];
+}
+
+export const MasonryImageList = ({ images }: MasonryImageListProps) => {
+  /* const { imagesCards } = useImageCard(); */
+  const reversedImages = [...images].reverse();
   const navigate = useNavigate();
 
   const handleImageClick = (id: string) => {

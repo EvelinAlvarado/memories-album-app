@@ -3,7 +3,13 @@ import { CategoryContext } from "./CategoryContext";
 import { ImageCardContext } from "./ImageCardContext";
 
 // Custom hooks
-export const useCategoryList = () => useContext(CategoryContext);
+export const useCategoryList = () => {
+  const context = useContext(CategoryContext);
+  if (!context) {
+    throw new Error("useCategoryList must be used within an CategoryProvider");
+  }
+  return context;
+};
 
 // This hook ensures that the context is used only within a valid ImageCardProvider.
 // If the context is undefined (i.e., if the hook is used outside of a provider),
