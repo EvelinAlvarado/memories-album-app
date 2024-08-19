@@ -6,12 +6,14 @@ import {
   LuTrash2,
   LuImageOff,
 } from "react-icons/lu";
-import { useImageCard } from "../context/useContexts";
+import { useCategoryList, useImageCard } from "../context/useContexts";
 import { ButtonCustom } from "../components/ButtonCustom";
 import { Popover } from "@mui/material";
 import React from "react";
+import { CategoryList } from "../components/CategoryList";
 
 export const ImageCard = () => {
+  const { categories } = useCategoryList();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -107,7 +109,12 @@ export const ImageCard = () => {
       </div>
       <h3 className="text-[16px] font-semibold">Description</h3>
       <p className="text-[12px]">{imageCard.description}</p>
-      <div>Categories</div>
+      <div>
+        <CategoryList
+          imageCategoryIds={imageCard.categoriesIds}
+          categories={categories}
+        />
+      </div>
     </section>
   );
 };

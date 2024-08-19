@@ -4,8 +4,10 @@ import { CategoryList } from "../components/CategoryList";
 import { ImageCarousel } from "../components/ImageCarousel";
 import { SearchInput } from "../components/SearchInput";
 import { LuImagePlus } from "react-icons/lu";
+import { useCategoryList } from "../context/useContexts";
 
 export const UserHome = () => {
+  const { categories } = useCategoryList();
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/image-form");
@@ -32,7 +34,7 @@ export const UserHome = () => {
           <SearchInput />
         </div>
         <div className="px-6">
-          <CategoryList />
+          <CategoryList categories={categories} />
         </div>
         {/* react slick use responsive and center mode */}
         <div className="h-full">
