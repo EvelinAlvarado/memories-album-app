@@ -5,77 +5,77 @@
       "title": "Beach Vacation",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["1", "2", "11"]
+      "categoriesNames": ["Vacation", "Family", "2024"]
     },
     {
       "id": "2",
       "title": "Graduation Day",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1625321482818-d13675fea97b?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["1"]
+      "categoriesNames": ["Vacation"]
     },
     {
       "id": "3",
       "title": "Italy",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1553342385-111fd6bc6ab3?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["1", "3"]
+      "categoriesNames": ["Vacation", "Italy"]
     },
     {
       "id": "4",
       "title": "Machu Picchu",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1509216242873-7786f446f465?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["1", "4", "5"]
+      "categoriesNames": ["Vacation", "Peru", "Mountain"]
     },
     {
       "id": "5",
       "title": "Cusco",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1627326333622-78e45ae99561?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["1", "3"]
+      "categoriesNames": ["Vacation", "Italy"]
     },
     {
       "id": "6",
       "title": "Walking",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://plus.unsplash.com/premium_photo-1661281363854-a9599b110b86?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["2"]
+      "categoriesNames": ["Family"]
     },
     {
       "id": "7",
       "title": "GrandPa Birthday",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://plus.unsplash.com/premium_photo-1681841659948-e62c96ee0e99?q=80&w=1698&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["2", "6"]
+      "categoriesNames": ["Family", "Birthday"]
     },
     {
       "id": "8",
       "title": "Ristorante",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1617655699589-64375e5ad9a5?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["1", "7"]
+      "categoriesNames": ["Vacation", "Food"]
     },
     {
       "id": "9",
       "title": "Music Festival",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1522601157550-4282ae97472d?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["8", "10", "11"]
+      "categoriesNames": ["Friends", "United States", "2024"]
     },
     {
       "id": "10",
       "title": "Beer",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1532634922-8fe0b757fb13?q=80&w=1472&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["7", "8", "11"]
+      "categoriesNames": ["Food", "Friends", "2024"]
     },
     {
       "id": "11",
       "title": "33 yeas!",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1685029965159-485d657017dc?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesIds": ["2", "6", "7", "8"]
+      "categoriesNames": ["Family", "Birthday", "Food", "Friends"]
     }
   ],
   "categories": [

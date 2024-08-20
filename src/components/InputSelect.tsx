@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Checkbox,
   FormControl,
@@ -6,15 +6,23 @@ import {
   ListItemText,
   MenuItem,
   OutlinedInput,
-  Popover,
   Select,
   SelectChangeEvent,
-  TextField,
 } from "@mui/material";
 import { useCategoryList } from "../context/useContexts";
-import { LuFolderPlus } from "react-icons/lu";
+import { LuAlertTriangle, LuFolderPlus } from "react-icons/lu";
 import { ButtonCustom } from "./ButtonCustom";
+import { DeepMap, FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { Category } from "../types/Category";
+import { useNavigate } from "react-router-dom";
 
+interface InputSelectProps {
+  registerForm: UseFormRegisterReturn;
+  errorForm: DeepMap<any, FieldError> | FieldError | undefined; //React-hook-form
+  onReset: () => void;
+}
+
+// Adjust Menu properties for better UI handling
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -26,13 +34,26 @@ const MenuProps = {
   },
 };
 
-export const InputSelect = () => {
+export const InputSelect = ({
+  registerForm,
+  errorForm,
+  onReset,
+}: InputSelectProps) => {
+  // Access category context
   const { categories } = useCategoryList();
 
   const [categorySelect, setCategorySelect] = useState<string[]>([]);
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
-    null
-  );
+  const navigate = useNavigate();
+  const handleAddNewCategory = () => {
+    navigate("/image-form/create-category");
+  };
+
+  // Effect to reset categories selection when onReset is called
+  useEffect(() => {
+    if (onReset) {
+      setCategorySelect([]); // Reset the selected categories
+    }
+  }, [onReset]); // Triggered when onReset is called
 
   const handleChange = (event: SelectChangeEvent<typeof categorySelect>) => {
     const {
@@ -40,21 +61,13 @@ export const InputSelect = () => {
     } = event;
     setCategorySelect(typeof value === "string" ? value.split(",") : value);
   };
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
   return (
     <div className="flex flex-row justify-between">
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Category</InputLabel>
         <Select
+          {...registerForm}
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
@@ -62,45 +75,33 @@ export const InputSelect = () => {
           label="Category"
           onChange={handleChange}
           input={<OutlinedInput label="Tag" />}
-          renderValue={(selected) => selected.join(", ")}
+          renderValue={(selected: string[]) => selected.join(", ")}
           MenuProps={MenuProps}
         >
-          {categories.map((category) => (
+          {categories.map((category: Category) => (
             <MenuItem key={category.id} value={category.name}>
+              {/* id or name */}
               <Checkbox checked={categorySelect.indexOf(category.name) > -1} />
               <ListItemText primary={category.name} />
             </MenuItem>
           ))}
         </Select>
+        {errorForm && (
+          <p className="text-red-500 flex items-center gap-2 pl-2">
+            <LuAlertTriangle className="" />
+            This field is required
+          </p>
+        )}
       </FormControl>
 
       <div className="ml-4">
         <ButtonCustom
-          onClickButton={handleClick}
+          onClickButton={handleAddNewCategory}
           nameButton={LuFolderPlus}
           textSize="text-[24px]"
           paddingY="py-3"
         />
         {/* snackbar after submitted photo */}
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          <div className="p-4 flex flex-col gap-2">
-            <TextField label="New Category" variant="outlined" />
-            <ButtonCustom nameButton="Save" />
-          </div>
-        </Popover>
       </div>
     </div>
   );

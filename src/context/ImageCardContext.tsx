@@ -19,8 +19,8 @@ export interface ImageCardProps {
   createImageCard: (
     image: string,
     description: string,
-    categoriesIds: string[],
-    title?: string
+    categoriesNames: string[],
+    title: string
   ) => Promise<void>;
   updateImageCard: (imageCard: ImageCard) => Promise<void>;
   deleteImageCard: (id: string) => Promise<void>;
@@ -47,7 +47,7 @@ interface ImageCardProviderProps {
 export const ImageCardProvider = ({ children }: ImageCardProviderProps) => {
   const [imagesCards, setImagesCards] = useState<ImageCard[]>([]);
 
-  //  Fetch imagescard from the server and update the local state.
+  //  Fetch imagesCard from the server and update the local state.
   //  This effect runs once when the component mounts.
   const fetchImagesCards = async () => {
     try {
@@ -64,14 +64,14 @@ export const ImageCardProvider = ({ children }: ImageCardProviderProps) => {
   const createImageCard = async (
     image: string,
     description: string,
-    categoriesIds: string[],
-    title?: string
+    categoriesNames: string[],
+    title: string
   ) => {
     try {
       const newImageCard = await imagesCardsClientServices.createImageCard(
         image,
         description,
-        categoriesIds,
+        categoriesNames,
         title
       );
       console.log("Create image card in context: ", newImageCard);

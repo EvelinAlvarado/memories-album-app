@@ -60,3 +60,4 @@ export const Gallery = () => {
   );
 };
 /* if there is not photo yet, write "No photo uploaded yet" and frame image */
+/* use useparams to link http://localhost:5173/gallery+family */

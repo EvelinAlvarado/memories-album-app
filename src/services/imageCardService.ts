@@ -18,17 +18,17 @@ const fetchImagesCards = async (): Promise<ImageCard[]> => {
 const createImageCard = async (
   image: string,
   description: string,
-  categoriesIds: string[],
-  title?: string // Reordering the parameters so `title` is last as it’s optional (convention)
+  categoriesNames: string[],
+  title: string // Reordering the parameters so `title` is last as it’s optional (convention)
 ): Promise<ImageCard> => {
   const id = uuidv4();
   try {
     const response = await api.post("/imagesCards", {
       id,
-      title: title || "", // Provide a default value if title is not present
+      title, // Provide a default value if title is not present
       image,
       description,
-      categoriesIds,
+      categoriesNames,
     });
     console.log("Image card created:", response.data);
     return response.data;

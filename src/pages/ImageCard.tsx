@@ -42,7 +42,9 @@ export const ImageCard = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  /* console.log(imageCard.categoriesNames);
+  console.log(imageCard.title);
+  console.log(imageCard.id); */
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
@@ -111,7 +113,7 @@ export const ImageCard = () => {
       <p className="text-[12px]">{imageCard.description}</p>
       <div>
         <CategoryList
-          imageCategoryIds={imageCard.categoriesIds}
+          imageCategoryNames={imageCard.categoriesNames}
           categories={categories}
         />
       </div>

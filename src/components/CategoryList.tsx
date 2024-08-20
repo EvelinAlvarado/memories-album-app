@@ -3,7 +3,7 @@ import { Category } from "../types/Category";
 
 interface CategoryListProps {
   categories: Category[];
-  imageCategoryIds?: string[];
+  imageCategoryNames?: string[];
 }
 
 const bgColors = ["bg-peach", "bg-rose", "bg-skyBlue"];
@@ -11,13 +11,15 @@ const hoverBgColors = ["bg-peach/80", "bg-rose/80", "bg-skyBlue/80"];
 
 export const CategoryList = ({
   categories,
-  imageCategoryIds,
+  imageCategoryNames,
 }: CategoryListProps) => {
   console.log("categories: ", categories);
-  console.log("imageCategoryIds: ", imageCategoryIds);
+  console.log("imageCategoryNames: ", imageCategoryNames);
   // If imageCategoryIds is provided, filter the categories based on it
-  const filteredCategories = imageCategoryIds
-    ? categories.filter((category) => imageCategoryIds.includes(category.id))
+  const filteredCategories = imageCategoryNames
+    ? categories.filter((category) =>
+        imageCategoryNames.includes(category.name)
+      )
     : categories;
   console.log("filteredCategories", filteredCategories);
 

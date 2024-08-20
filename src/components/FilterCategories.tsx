@@ -18,7 +18,7 @@ export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  /* use here useparams? */
   const handleCheckboxChange = (categoryId: string) => {
     setSelectedCategories((prevSelected) => {
       const isSelected = prevSelected.includes(categoryId);
