@@ -24,9 +24,9 @@ export const Gallery = () => {
     } else {
       setFilteredImages(
         imagesCards.filter((card) => {
-          console.log("card.categoriesIds: ", card.categoriesIds);
+          console.log("card.categoriesNames: ", card.categoriesNames);
           return selectedCategories.every((category) =>
-            card.categoriesIds.includes(category)
+            card.categoriesNames.includes(category)
           );
         })
       );

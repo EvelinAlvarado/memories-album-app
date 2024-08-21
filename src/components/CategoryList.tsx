@@ -1,5 +1,6 @@
 import { ButtonCustom } from "./ButtonCustom";
 import { Category } from "../types/Category";
+import { useNavigate } from "react-router-dom";
 
 interface CategoryListProps {
   categories: Category[];
@@ -13,6 +14,14 @@ export const CategoryList = ({
   categories,
   imageCategoryNames,
 }: CategoryListProps) => {
+  const navigate = useNavigate();
+
+  const handleClickCategory =
+    (categoryName: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault(); // Prevents default behavior if needed
+      navigate(`/gallery/album/${categoryName}`);
+    };
+
   console.log("categories: ", categories);
   console.log("imageCategoryNames: ", imageCategoryNames);
   // If imageCategoryIds is provided, filter the categories based on it
@@ -32,6 +41,7 @@ export const CategoryList = ({
           filteredCategories.map((category, index) => (
             <li key={category.id}>
               <ButtonCustom
+                onClickButton={handleClickCategory(category.name)}
                 nameButton={category.name}
                 textSize="text-[14px]"
                 paddingY="py-1.5"

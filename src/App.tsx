@@ -9,6 +9,7 @@ import { ImageForm } from "./pages/ImageForm";
 import { ImageCard } from "./pages/ImageCard";
 import { Image } from "./pages/Image";
 import { NewCategoryForm } from "./pages/NewCategoryForm";
+import { CategoryAlbum } from "./pages/CategoryAlbum";
 function App() {
   return (
     <div className="h-screen">
@@ -20,6 +21,10 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/user-home" element={<UserHome />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route
+            path="/gallery/album/:categoryName"
+            element={<CategoryAlbum />}
+          />
           <Route path="/gallery/:imageId" element={<ImageCard />} />
           <Route path="/gallery/:imageId/image" element={<Image />} />
           <Route path="/image-form" element={<ImageForm />} />
