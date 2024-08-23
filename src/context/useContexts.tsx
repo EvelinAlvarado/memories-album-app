@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CategoryContext } from "./CategoryContext";
 import { ImageCardContext } from "./ImageCardContext";
+import { UserContext } from "./UserContext";
 
 // Custom hooks
 export const useCategoryList = () => {
@@ -18,6 +19,14 @@ export const useImageCard = () => {
   const context = useContext(ImageCardContext);
   if (!context) {
     throw new Error("useImageCard must be used within an ImageCardProvider");
+  }
+  return context;
+};
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be uses within UserProvider");
   }
   return context;
 };
