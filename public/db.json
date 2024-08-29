@@ -2,7 +2,15 @@
   "user": [
     {
       "userName": "naaaaammme",
-      "userId": "001"
+      "id": "001"
+    },
+    {
+      "id": "0462c88c-2f70-420d-a044-f13463a2e894",
+      "userName": "Navi"
+    },
+    {
+      "id": "95739214-89e9-4192-8fcd-3c82221995e1",
+      "userName": "Navi"
     }
   ],
   "imagesCards": [
@@ -18,7 +26,7 @@
       "title": "Graduation Day",
       "description": "In felis nibh, iaculis dignissim lorem nec, laoreet semper ex. Aliquam ut dapibus ligula. Ut ultricies mollis ultrices. In dui enim, faucibus at rhoncus ac, semper ac urna.",
       "image": "https://images.unsplash.com/photo-1625321482818-d13675fea97b?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      "categoriesNames": ["Vacation"]
+      "categoriesNames": ["2024"]
     },
     {
       "id": "3",

@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { ButtonCustom } from "../components/ButtonCustom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LuAlertTriangle } from "react-icons/lu";
+import { useUser } from "../context/useContexts";
+import { useEffect, useState } from "react";
 
 interface Inputs {
   userName: string;
@@ -9,6 +11,8 @@ interface Inputs {
 
 export const WelcomeForm = () => {
   const navigate = useNavigate();
+  const { createUser, currentUser } = useUser();
+  const [isUserCreated, setIsUserCreated] = useState(false);
   /* const [name, setName] = useState(""); */
   const {
     register,
@@ -16,21 +20,26 @@ export const WelcomeForm = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
-  /* const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
-    setName(e.target.value);
-  }; */
-
-  /* const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("boton presionado");
-    navigate("/user-home");
-  }; */
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
     console.log("boton presionado");
-    navigate("/user-home");
+    try {
+      //const createdUser = await createUser(data.userName);
+      await createUser(data.userName);
+      /* const { id, ...cleanUser } = createdUser;
+      setCurrentUser(cleanUser); */
+      setIsUserCreated(true);
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
   };
+
+  useEffect(() => {
+    if (isUserCreated && currentUser?.id) {
+      console.log("Current User after creation:", currentUser);
+      navigate(`/user-home/${currentUser.id}`);
+    }
+  }, [currentUser, isUserCreated, navigate]);
   return (
     <div className="h-screen px-6 py-12 flex flex-col gap-14 w-screen">
       <span className="text-[26px]">Welcome!</span>

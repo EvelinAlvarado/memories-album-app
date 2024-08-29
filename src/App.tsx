@@ -19,7 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/welcome" element={<WelcomeForm />} />
         <Route element={<Layout />}>
-          <Route path="/user-home" element={<UserHome />} />
+          <Route path="/user-home/:userId" element={<UserHome />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route
             path="/gallery/album/:categoryName"
@@ -32,7 +32,7 @@ function App() {
             path="/image-form/create-category"
             element={<NewCategoryForm />}
           />
-          <Route path="/user" element={<User />} />
+          <Route path="/user/:userId" element={<User />} />
         </Route>
       </Routes>
 

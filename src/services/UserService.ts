@@ -15,12 +15,12 @@ const fetchUser = async (): Promise<User[]> => {
 };
 
 //Function to create a new User
-const createUser = async (name: string): Promise<User> => {
+const createUser = async (userName: string): Promise<User> => {
   const id = uuidv4();
   try {
     const response = await api.post("/user", {
       id,
-      name,
+      userName,
     });
     console.log(response.status, response.data);
     return response.data;
@@ -33,7 +33,7 @@ const createUser = async (name: string): Promise<User> => {
 //Function to update User
 const updateUser = async (user: User): Promise<User> => {
   try {
-    const response = await api.put(`/user/${user.userId}`, user);
+    const response = await api.put(`/user/${user.id}`, user);
     console.log(response.status, response.data);
     return response.data;
   } catch (error) {
@@ -43,10 +43,10 @@ const updateUser = async (user: User): Promise<User> => {
 };
 
 //Function to delete a User
-const deleteUser = async (id: string): Promise<boolean> => {
+const deleteUser = async (userId: string): Promise<boolean> => {
   try {
-    console.log("Delete user: ", id);
-    const response = await api(`/user/${id}`);
+    console.log("Delete user: ", userId);
+    const response = await api(`/user/${userId}`);
     const isDeleted = response.status === 200;
     if (isDeleted) {
       console.log("User deleting successfully");
