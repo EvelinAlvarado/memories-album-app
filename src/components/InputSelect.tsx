@@ -57,10 +57,15 @@ InputSelectProps) => {
   };
 
   // Effect to reset categories selection when onReset is called
+  // useEffect(() => {
+  //   if (onReset) {
+  //     setCategorySelect([]); // Reset the selected categories
+  //   }
+  // }, [onReset]); // Triggered when onReset is called
+
+  // Reset categories selection when onReset is called
   useEffect(() => {
-    if (onReset) {
-      setCategorySelect([]); // Reset the selected categories
-    }
+    setCategorySelect([]); // Directly reset the selected categories
   }, [onReset]); // Triggered when onReset is called
 
   const handleChange = (event: SelectChangeEvent<typeof categorySelect>) => {

@@ -26,7 +26,7 @@ export const User = () => {
   ); // Estado para almacenar la imagen de perfil
   const [isEditingImage, setIsEditingImage] = useState<boolean>(false); // Estado para controlar si estamos en modo de edición
   const [isEditingName, setIsEditingName] = useState<boolean>(false);
-
+  console.log(isEditingImage);
   const {
     register,
     handleSubmit,
