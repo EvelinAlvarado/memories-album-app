@@ -27,7 +27,7 @@ function App() {
           />
           <Route path="/gallery/:imageId" element={<ImageCard />} />
           <Route path="/gallery/:imageId/image" element={<Image />} />
-          <Route path="/image-form" element={<ImageForm />} />
+          <Route path="/image-form/:imageId?" element={<ImageForm />} />
           <Route
             path="/image-form/create-category"
             element={<NewCategoryForm />}

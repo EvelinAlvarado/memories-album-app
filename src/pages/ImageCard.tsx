@@ -19,7 +19,7 @@ export const ImageCard = () => {
   );
   const navigate = useNavigate();
   const { imageId } = useParams<{ imageId: string }>();
-  const { imagesCards } = useImageCard();
+  const { imagesCards, deleteImageCard } = useImageCard();
   const imageCard = imagesCards.find((card) => card.id === imageId);
 
   if (!imageCard) {
@@ -41,6 +41,18 @@ export const ImageCard = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const onClickEditCard = (cardId: string) => {
+    console.log("click edit:", cardId);
+    navigate(`/image-form/${imageCard.id}`);
+  };
+
+  const oncClickDeleteCard = async (cardId: string) => {
+    console.log("Click on card to delete id: ", cardId);
+    await deleteImageCard(cardId);
+    console.log("Delete card id: ", cardId);
+    navigate("/gallery");
   };
   /* console.log(imageCard.categoriesNames);
   console.log(imageCard.title);
@@ -78,13 +90,21 @@ export const ImageCard = () => {
           >
             <ul className="">
               <li className="my-2 mx-4 text-[16px]">
-                <button type="button" className="flex items-center gap-2">
+                <button
+                  onClick={() => onClickEditCard(imageCard.id)}
+                  type="button"
+                  className="flex items-center gap-2"
+                >
                   <LuPencilLine />
                   Edit
                 </button>
               </li>
               <li className="my-2 mx-4 text-[16px]">
-                <button type="button" className="flex items-center gap-2">
+                <button
+                  onClick={() => oncClickDeleteCard(imageCard.id)}
+                  type="button"
+                  className="flex items-center gap-2"
+                >
                   <LuTrash2 />
                   Delete
                 </button>

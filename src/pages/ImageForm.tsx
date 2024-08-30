@@ -4,18 +4,21 @@ import { InputSelect } from "../components/InputSelect";
 import { ButtonCustom } from "../components/ButtonCustom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useImageCard } from "../context/useContexts";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
 
-interface FormData {
+export interface FormData {
   title: string;
   image: string;
   description: string;
   categoriesNames: string[];
 }
 
-/* const formInputs: string[] = ["Title", "Url", "Description"]; */
 export const ImageForm = () => {
   // use context to create a new image
-  const { createImageCard } = useImageCard();
+  const { createImageCard, updateImageCard, imagesCards } = useImageCard();
+  const navigate = useNavigate();
+  const { imageId } = useParams<{ imageId?: string }>();
 
   // Initialize React Hook Form with types
   const {
@@ -23,6 +26,7 @@ export const ImageForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<FormData>({
     defaultValues: {
       title: "",
@@ -30,17 +34,44 @@ export const ImageForm = () => {
       description: "",
       categoriesNames: [],
     },
-  }); /* use reset() */
+  });
+
+  useEffect(() => {
+    if (imageId) {
+      const imageCard = imagesCards.find((card) => card.id === imageId);
+      if (imageCard) {
+        setValue("title", imageCard.title);
+        setValue("image", imageCard.image);
+        setValue("description", imageCard.description);
+        setValue("categoriesNames", imageCard.categoriesNames);
+      }
+    }
+  }, [imageId, imagesCards, setValue]);
 
   // Form submission handler
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log("newimagecard input data: ", data);
-    createImageCard(
-      data.image,
-      data.description,
-      data.categoriesNames,
-      data.title
-    );
+    console.log("imageCard: ", data);
+    if (imageId) {
+      // If imageId exists, update the image card
+      const updatedCard = {
+        ...data,
+        id: imageId,
+      };
+      console.log("updated imageCard: ", updatedCard);
+      updateImageCard(updatedCard).then(() => {
+        navigate(`/gallery/${imageId}`);
+      });
+    } else {
+      // Otherwise, create a new image card
+      createImageCard(
+        data.image,
+        data.description,
+        data.categoriesNames,
+        data.title
+      ).then(() => {
+        navigate("/gallery");
+      });
+    }
     reset();
   };
   return (
@@ -52,7 +83,7 @@ export const ImageForm = () => {
       onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="text-[24px] text-black font-semibold mb-4">
-        Add New Image
+        {imageId ? "Edit Image" : "Add New Image"}
       </h2>
       <div>
         <TextField
@@ -116,6 +147,7 @@ export const ImageForm = () => {
         registerForm={register("categoriesNames", { required: true })}
         errorForm={errors.categoriesNames}
         onReset={() => reset()}
+        /* setValue={setValue} */
       />
 
       <ButtonCustom nameButton={"Save"} buttonType="submit" />

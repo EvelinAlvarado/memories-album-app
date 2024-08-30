@@ -19,12 +19,12 @@ export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
     setAnchorEl(null);
   };
   /* use here useparams? */
-  const handleCheckboxChange = (categoryId: string) => {
+  const handleCheckboxChange = (categoryName: string) => {
     setSelectedCategories((prevSelected) => {
-      const isSelected = prevSelected.includes(categoryId);
+      const isSelected = prevSelected.includes(categoryName);
       const updatedSelected = isSelected
-        ? prevSelected.filter((id) => id !== categoryId)
-        : [...prevSelected, categoryId];
+        ? prevSelected.filter((name) => name !== categoryName)
+        : [...prevSelected, categoryName];
 
       onFilterChange(updatedSelected); // Pass the selected categories up to the parent component
       return updatedSelected;
@@ -59,8 +59,8 @@ export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
                 key={category.id}
                 control={
                   <Checkbox
-                    checked={selectedCategories.includes(category.id)}
-                    onChange={() => handleCheckboxChange(category.id)}
+                    checked={selectedCategories.includes(category.name)}
+                    onChange={() => handleCheckboxChange(category.name)}
                   />
                 }
                 label={category.name}

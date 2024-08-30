@@ -12,14 +12,21 @@ import {
 import { useCategoryList } from "../context/useContexts";
 import { LuAlertTriangle, LuFolderPlus } from "react-icons/lu";
 import { ButtonCustom } from "./ButtonCustom";
-import { DeepMap, FieldError, UseFormRegisterReturn } from "react-hook-form";
+import {
+  DeepMap,
+  FieldError,
+  UseFormRegisterReturn,
+  /* UseFormSetValue, */
+} from "react-hook-form";
 import { Category } from "../types/Category";
 import { useNavigate } from "react-router-dom";
+/* import { FormData } from "../pages/ImageForm"; */
 
 interface InputSelectProps {
   registerForm: UseFormRegisterReturn;
   errorForm: DeepMap<any, FieldError> | FieldError | undefined; //React-hook-form
   onReset: () => void;
+  /* setValue: UseFormSetValue<FormData>; */
 }
 
 // Adjust Menu properties for better UI handling
@@ -38,7 +45,8 @@ export const InputSelect = ({
   registerForm,
   errorForm,
   onReset,
-}: InputSelectProps) => {
+}: /* setValue, */
+InputSelectProps) => {
   // Access category context
   const { categories } = useCategoryList();
 
@@ -59,7 +67,10 @@ export const InputSelect = ({
     const {
       target: { value },
     } = event;
-    setCategorySelect(typeof value === "string" ? value.split(",") : value);
+    const newCategorySelect =
+      typeof value === "string" ? value.split(",") : value;
+    setCategorySelect(newCategorySelect);
+    /* setValue("categoriesNames", newCategorySelect); */
   };
 
   return (

@@ -107,10 +107,13 @@ export const ImageCardProvider = ({ children }: ImageCardProviderProps) => {
   const deleteImageCard = async (id: string) => {
     try {
       await imagesCardsClientServices.deleteImageCard(id);
-      setImagesCards((prevImagesCard) =>
-        prevImagesCard.filter((card) => card.id !== id)
-      );
-      console.log("Images Cards after to delete an image card: ", imagesCards);
+      setImagesCards((prevImagesCard) => {
+        const updatedImagesCards = prevImagesCard.filter(
+          (card) => card.id !== id
+        );
+        console.log("Images Cards after deletion:", updatedImagesCards); // Log after state update
+        return updatedImagesCards;
+      });
     } catch (error) {
       console.error("Failed to delete image card in context:", error);
     }
