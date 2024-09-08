@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore the Firebase service account key
+#npx -p node-firestore-import-export firestore-import -a src/config/firebaseServiceAccount.json -b src/data/db.json
+src/config/firebaseServiceAccount.json
