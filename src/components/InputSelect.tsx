@@ -13,8 +13,8 @@ import { useCategoryList } from "../context/useContexts";
 import { LuAlertTriangle, LuFolderPlus } from "react-icons/lu";
 import { ButtonCustom } from "./ButtonCustom";
 import {
-  DeepMap,
   FieldError,
+  Merge,
   UseFormRegisterReturn,
   /* UseFormSetValue, */
 } from "react-hook-form";
@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 interface InputSelectProps {
   registerForm: UseFormRegisterReturn;
-  errorForm: DeepMap<any, FieldError> | FieldError | undefined; //React-hook-form
+  errorForm: Merge<FieldError, (FieldError | undefined)[]> | undefined; //React-hook-form
   onReset: () => void;
   /* setValue: UseFormSetValue<FormData>; */
 }
