@@ -1,63 +1,95 @@
-import { v4 as uuidv4 } from "uuid";
-import { api } from "./api";
-import { User } from "../types/User";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  DocumentData,
+  DocumentReference,
+  getDocs,
+  QuerySnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase/config";
+import { User, UserWithId } from "../types/User";
 
-// Function to fetch user data from the server using async/await
-const fetchUser = async (): Promise<User[]> => {
+// Fetch User data from Firestore
+const fetchUser = async (): Promise<UserWithId[]> => {
   try {
-    const response = await api.get("/user");
-    console.log(response.status, response.data);
-    return response.data;
+    // Reference to 'user' collection in Firestore
+    const collectionRef = collection(db, "user");
+    console.log(collectionRef);
+    // Fetch data
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+      collectionRef
+    );
+    console.log(querySnapshot);
+    // Map over the querySnapshot to extract user data
+    const userData: UserWithId[] = querySnapshot.docs.map((doc) => {
+      console.log(doc.id);
+      console.log(doc.data());
+      return {
+        id: doc.id,
+        ...(doc.data() as User),
+      };
+    });
+    console.log(userData);
+    return userData;
   } catch (error) {
     console.log("Error fetching user: ", error);
     throw new Error("Failed to fetch user");
   }
 };
 
-//Function to create a new User
-const createUser = async (userName: string): Promise<User> => {
-  const id = uuidv4();
+// Create a new user in Firestore
+const createUser = async (
+  newUser: User
+): Promise<DocumentReference<DocumentData>> => {
   try {
-    const response = await api.post("/user", {
-      id,
-      userName,
-    });
-    console.log(response.status, response.data);
-    return response.data;
+    // Reference to 'user' collection
+    const collectionRef = collection(db, "user");
+    // Add new document
+    const newDoc = await addDoc(collectionRef, newUser);
+    console.log("New doc added with ID", newDoc.id);
+    return newDoc;
   } catch (error) {
     console.log("Error creating user", error);
     throw new Error("Failed to create a User");
   }
 };
 
-//Function to update User
-const updateUser = async (user: User): Promise<User> => {
+// Update an existing user in Firestore
+const updateUser = async (
+  id: string,
+  updateData: Partial<User>
+): Promise<void> => {
   try {
-    const response = await api.put(`/user/${user.id}`, user);
-    console.log(response.status, response.data);
-    return response.data;
+    // Reference to specific document by ID
+    const docRef = doc(db, "user", id);
+    // Update document data
+    await updateDoc(docRef, updateData);
+    console.log("Document (user) was updated: ", docRef.id);
   } catch (error) {
     console.log("Error updating user");
     throw new Error("Failed to update User.");
   }
 };
 
-//Function to delete a User
-const deleteUser = async (userId: string): Promise<boolean> => {
+// Delete a user from Firestore
+const deleteUser = async (id: string): Promise<void> => {
   try {
-    console.log("Delete user: ", userId);
-    const response = await api(`/user/${userId}`);
-    const isDeleted = response.status === 200;
-    if (isDeleted) {
-      console.log("User deleting successfully");
-    }
-    return isDeleted;
+    console.log("Deleting user by id: ", id);
+    // Reference to document by ID
+    const docRef = doc(db, "user", id);
+    // Delete document from Firestore
+    await deleteDoc(docRef);
+    console.log("Document (user) was deleted successfully");
   } catch (error) {
     console.log("Error deleting user: ", error);
     throw new Error("Failed to delete a User.");
   }
 };
 
+// Export user service functions
 export const userClientServices = {
   fetchUser,
   createUser,

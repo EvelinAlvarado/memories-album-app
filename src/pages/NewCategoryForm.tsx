@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { TextField } from "@mui/material";
 import { LuAlertTriangle, LuChevronLeftCircle } from "react-icons/lu";
 import { ButtonCustom } from "../components/ButtonCustom";
+import { Category } from "../types/Category";
 
 // Interface for new category input form
 interface NewCategoryInputs {
@@ -27,9 +28,15 @@ export const NewCategoryForm = () => {
 
   // Form submission handler for creating new category
   const onSubmit: SubmitHandler<NewCategoryInputs> = async (data) => {
-    await createCategory(data.newCategory);
-    reset();
-    //navigate('/'); // Redirect to the previous page (main form page)
+    try {
+      //Create an object of category with the name form
+      const newCategory: Category = { name: data.newCategory };
+      await createCategory(newCategory);
+      reset();
+      //navigate('/'); // Redirect to the previous page (main form page)
+    } catch (error) {
+      console.error("Failed to create category:", error);
+    }
   };
   return (
     <section className="h-full overflow-auto flex flex-col pt-8 px-6 gap-6">

@@ -21,8 +21,12 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/user-home/:userId" element={<UserHome />} />
           <Route path="/gallery" element={<Gallery />} />
-          <Route
+          {/* <Route
             path="/gallery/album/:categoryName"
+            element={<CategoryAlbum />}
+          /> */}
+          <Route
+            path="/gallery/album/:categoryId"
             element={<CategoryAlbum />}
           />
           <Route path="/gallery/:imageId" element={<ImageCard />} />

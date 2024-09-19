@@ -1,7 +1,10 @@
 export interface ImageCard {
-  id: string;
   title: string;
   image: string;
   description: string;
-  categoriesNames: string[];
+  categoriesIds: string[];
+}
+
+export interface ImageCardWithId extends ImageCard {
+  id: string;
 }

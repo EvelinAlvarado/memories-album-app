@@ -1,10 +1,10 @@
 import { ButtonCustom } from "./ButtonCustom";
-import { Category } from "../types/Category";
+import { CategoryWithId } from "../types/Category";
 import { useNavigate } from "react-router-dom";
 
 interface CategoryListProps {
-  categories: Category[];
-  imageCategoryNames?: string[];
+  categories: CategoryWithId[];
+  imageCategoryIds?: string[];
 }
 
 const bgColors = ["bg-peach", "bg-rose", "bg-skyBlue"];
@@ -12,23 +12,21 @@ const hoverBgColors = ["bg-peach/80", "bg-rose/80", "bg-skyBlue/80"];
 
 export const CategoryList = ({
   categories,
-  imageCategoryNames,
+  imageCategoryIds,
 }: CategoryListProps) => {
   const navigate = useNavigate();
 
   const handleClickCategory =
-    (categoryName: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (categoryId: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault(); // Prevents default behavior if needed
-      navigate(`/gallery/album/${categoryName}`);
+      navigate(`/gallery/album/${categoryId}`);
     };
 
   console.log("categories: ", categories);
-  console.log("imageCategoryNames: ", imageCategoryNames);
+  console.log("imageCategoryIds: ", imageCategoryIds);
   // If imageCategoryIds is provided, filter the categories based on it
-  const filteredCategories = imageCategoryNames
-    ? categories.filter((category) =>
-        imageCategoryNames.includes(category.name)
-      )
+  const filteredCategories = imageCategoryIds
+    ? categories.filter((category) => imageCategoryIds.includes(category.id))
     : categories;
   console.log("filteredCategories", filteredCategories);
 
@@ -41,7 +39,7 @@ export const CategoryList = ({
           filteredCategories.map((category, index) => (
             <li key={category.id}>
               <ButtonCustom
-                onClickButton={handleClickCategory(category.name)}
+                onClickButton={handleClickCategory(category.id)}
                 nameButton={category.name}
                 textSize="text-[14px]"
                 paddingY="py-1.5"

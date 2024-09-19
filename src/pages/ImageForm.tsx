@@ -11,7 +11,7 @@ export interface FormData {
   title: string;
   image: string;
   description: string;
-  categoriesNames: string[];
+  categoriesIds: string[];
 }
 
 export const ImageForm = () => {
@@ -32,7 +32,7 @@ export const ImageForm = () => {
       title: "",
       image: "",
       description: "",
-      categoriesNames: [],
+      categoriesIds: [],
     },
   });
 
@@ -43,7 +43,7 @@ export const ImageForm = () => {
         setValue("title", imageCard.title);
         setValue("image", imageCard.image);
         setValue("description", imageCard.description);
-        setValue("categoriesNames", imageCard.categoriesNames);
+        setValue("categoriesIds", imageCard.categoriesIds);
       }
     }
   }, [imageId, imagesCards, setValue]);
@@ -53,22 +53,17 @@ export const ImageForm = () => {
     console.log("imageCard: ", data);
     if (imageId) {
       // If imageId exists, update the image card
-      const updatedCard = {
-        ...data,
-        id: imageId,
-      };
-      console.log("updated imageCard: ", updatedCard);
-      updateImageCard(updatedCard).then(() => {
+      // const updatedCard = {
+      //   ...data,
+      //   id: imageId,
+      // };
+      updateImageCard(imageId, data).then(() => {
         navigate(`/gallery/${imageId}`);
+        console.log("updated imageCard: ", imageId, data);
       });
     } else {
       // Otherwise, create a new image card
-      createImageCard(
-        data.image,
-        data.description,
-        data.categoriesNames,
-        data.title
-      ).then(() => {
+      createImageCard(data).then(() => {
         navigate("/gallery");
       });
     }
@@ -144,10 +139,9 @@ export const ImageForm = () => {
 
       {/* The InputSelect component for category selection */}
       <InputSelect
-        registerForm={register("categoriesNames", { required: true })}
-        errorForm={errors.categoriesNames}
+        registerForm={register("categoriesIds", { required: true })}
+        errorForm={errors.categoriesIds}
         onReset={() => reset()}
-        /* setValue={setValue} */
       />
 
       <ButtonCustom nameButton={"Save"} buttonType="submit" />

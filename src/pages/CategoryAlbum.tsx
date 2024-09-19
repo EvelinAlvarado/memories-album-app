@@ -6,16 +6,23 @@ import { useImageCard } from "../context/useContexts";
 import { useParams } from "react-router-dom";
 import { NotFoundImage } from "../components/NotFoundImage";
 import { MasonryImageList } from "../components/ImageList";
+import { useForm } from "react-hook-form";
+import { Category } from "../types/Category";
 
 export const CategoryAlbum = () => {
   const { imagesCards } = useImageCard();
   const [imagesAlbum, setImagesAlbum] = useState(imagesCards);
-  const { categoryName } = useParams<{ categoryName: string }>();
+  const { categoryId, categoryName } = useParams<{
+    categoryId: string;
+    categoryName: string;
+  }>();
+  const [isEditingCategoryName, setIsEditingCategoryName] =
+    useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
 
-  console.log(categoryName);
+  console.log(categoryId);
   // Handle the popover for options
   const handleClickOptions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -27,16 +34,27 @@ export const CategoryAlbum = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  //Editing and updating Category name
+  console.log(isEditingCategoryName);
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   setValue,
+  //   formState: { errors },
+  // } = useForm<Category>({
+  //   defaultValues: { userName: currentUser?.userName || "" },
+  // });
+
   // Effect to filter images based on the selected category
   useEffect(() => {
-    if (categoryName) {
-      const filteredImages = imagesCards.filter((card) =>
-        card.categoriesNames.includes(categoryName)
+    if (categoryId) {
+      const filteredImages = imagesCards.filter(
+        (card) => card.id === categoryId
       );
       console.log(filteredImages);
       setImagesAlbum(filteredImages);
     }
-  }, [imagesCards, categoryName]); // Update the state when imagesCards or categoryName changes
+  }, [imagesCards, categoryId]); // Update the state when imagesCards or categoryName changes
 
   return (
     <section className="h-full flex flex-col">

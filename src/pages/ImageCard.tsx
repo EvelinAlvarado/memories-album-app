@@ -9,7 +9,7 @@ import {
 import { useCategoryList, useImageCard } from "../context/useContexts";
 import { ButtonCustom } from "../components/ButtonCustom";
 import { Popover } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CategoryList } from "../components/CategoryList";
 
 export const ImageCard = () => {
@@ -21,6 +21,16 @@ export const ImageCard = () => {
   const { imageId } = useParams<{ imageId: string }>();
   const { imagesCards, deleteImageCard } = useImageCard();
   const imageCard = imagesCards.find((card) => card.id === imageId);
+  // State to store a map a categories (ID --> categoryName)
+  const [categoryMap, setCategoryMap] = useState<Map<string, string>>(
+    new Map()
+  );
+
+  useEffect(() => {
+    const map = new Map<string, string>();
+    categories.forEach((category) => map.set(category.id, category.name));
+    setCategoryMap(map);
+  }, [categories]);
 
   if (!imageCard) {
     return (
@@ -54,9 +64,17 @@ export const ImageCard = () => {
     console.log("Delete card id: ", cardId);
     navigate("/gallery");
   };
-  /* console.log(imageCard.categoriesNames);
+  console.log(imageCard.categoriesIds);
   console.log(imageCard.title);
-  console.log(imageCard.id); */
+  console.log(imageCard.id);
+
+  // Convert categoriesIds its names
+  // const categoryNames = imageCard.categoriesIds.map(
+  //   (id) => categoryMap.get(id) || ""
+  // );
+  console.log("categorymap: ", categoryMap);
+  // console.log("categorynames: ", categoryNames);
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   return (
@@ -133,7 +151,7 @@ export const ImageCard = () => {
       <p className="text-[12px]">{imageCard.description}</p>
       <div>
         <CategoryList
-          imageCategoryNames={imageCard.categoriesNames}
+          imageCategoryIds={imageCard.categoriesIds}
           categories={categories}
         />
       </div>

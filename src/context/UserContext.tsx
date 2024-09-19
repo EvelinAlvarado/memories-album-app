@@ -1,19 +1,19 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { User } from "../types/User";
+import { User, UserWithId } from "../types/User";
 import { userClientServices } from "../services/UserService";
 
 export interface UserProps {
-  user: User[];
-  currentUser: User | null; // New state to store the current user
+  user: UserWithId[]; // User array from Firestore
+  currentUser: UserWithId | null; // Track the current selected user
   /* setCurrentUser: (user: User | null) => void; */
-  fetchUser: () => Promise<void>;
-  createUser: (userName: string) => Promise<void>;
-  updateUser: (user: User) => Promise<void>;
+  fetchUser: () => Promise<UserWithId[]>;
+  createUser: (user: User) => Promise<UserWithId>;
+  updateUser: (userId: string, updateData: Partial<User>) => Promise<void>;
   deleteUser: (userId: string) => Promise<void>;
 }
 
 /**
- * `UserContext` is initialized with `undefined` to handle cases where the context
+ ** `UserContext` is initialized with `undefined` to handle cases where the context
  * might not be available or provided by a parent component. This ensures that if a
  * component tries to access the context without a provider, TypeScript will enforce
  * checking for `undefined`, prompting you to handle the case where the context is not available.
@@ -29,44 +29,54 @@ interface UserProviderProps {
 
 // `children` represents the nested content/components that this provider will wrap around
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserWithId[]>([]); // State to hold the user list
+  const [currentUser, setCurrentUser] = useState<UserWithId | null>(null);
 
   //  Fetch User from the server and update the local state.
   //  This effect runs once when the component mounts.
-  const fetchUser = async () => {
+  const fetchUser = async (): Promise<UserWithId[]> => {
     try {
-      const data = await userClientServices.fetchUser();
+      const data = await userClientServices.fetchUser(); // Fetch users from Firestore
       console.log("Fetching user in context: ", data);
       setUser(data);
+      return data;
     } catch (error) {
       console.log("Failed to fetch user in context: ", error);
+      throw error;
     }
   };
 
   // Create a new user, update the user list and set currentUser
-  const createUser = async (userName: string) => {
+  const createUser = async (user: User): Promise<UserWithId> => {
     try {
-      const newUser = await userClientServices.createUser(userName);
-      console.log("Create a new User in context: ", newUser);
-      setUser((prevUser) => [...prevUser, newUser]);
+      // Create user in Firestore
+      const newUserDoc = await userClientServices.createUser(user);
+      console.log("Create a new User in context: ", newUserDoc);
+      // Add ID to the created user
+      const newUser: UserWithId = { ...user, id: newUserDoc.id };
+      setUser((prevUser) => [...prevUser, newUser]); // Add new user to the state
       setCurrentUser(newUser); // Set currentUser after creation
-      /* return newUser; */
+      return newUser;
     } catch (error) {
       console.log("Error to create a User in context: ", error);
+      throw error;
     }
   };
 
-  // Update an existing user, update the user list and set currentUser if necessary
-  const updateUser = async (user: User) => {
+  // Update a user and refresh the state
+  const updateUser = async (userId: string, updateData: Partial<User>) => {
     try {
-      const updatedUser = await userClientServices.updateUser(user);
+      await userClientServices.updateUser(userId, updateData);
       setUser((prevUser) =>
         prevUser.map((user) =>
-          user.id === updatedUser.id ? updatedUser : user
+          user.id === userId ? { ...user, ...updateData } : user
         )
       );
-      setCurrentUser(updatedUser);
+      if (currentUser?.id === userId) {
+        setCurrentUser((prevUser) =>
+          prevUser ? { ...prevUser, ...updateData } : null
+        );
+      }
       console.log("User after updated function: ", user);
     } catch (error) {
       console.log("Failed to update User in context");
@@ -83,15 +93,23 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       }
       console.log("User after delete in context: ", user);
     } catch (error) {
-      console.log("Failed to delete user in context");
+      console.log(`Failed to delete user with ID: ${userId}`, error);
     }
   };
 
   console.log("currentUser in context: ", currentUser);
+  console.log(user);
   // useEffect hook to fetch categories when the component mounts.
   // The empty dependency array `[]` ensures this effect runs only once.
   useEffect(() => {
-    fetchUser();
+    const loadUsers = async () => {
+      try {
+        await fetchUser();
+      } catch (error) {
+        console.error("Failed to load users:", error);
+      }
+    };
+    loadUsers();
   }, []);
   return (
     <UserContext.Provider

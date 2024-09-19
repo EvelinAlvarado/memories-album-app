@@ -18,7 +18,7 @@ import {
   UseFormRegisterReturn,
   /* UseFormSetValue, */
 } from "react-hook-form";
-import { Category } from "../types/Category";
+import { CategoryWithId } from "../types/Category";
 import { useNavigate } from "react-router-dom";
 /* import { FormData } from "../pages/ImageForm"; */
 
@@ -49,33 +49,45 @@ export const InputSelect = ({
 InputSelectProps) => {
   // Access category context
   const { categories } = useCategoryList();
+  // State to manage selected category IDs
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+  // State to manage category names to IDs map
+  const [categoryMap, setCategoryMap] = useState<Map<string, string>>(
+    new Map()
+  );
 
-  const [categorySelect, setCategorySelect] = useState<string[]>([]);
+  // const [categorySelect, setCategorySelect] = useState<string[]>([]);
   const navigate = useNavigate();
   const handleAddNewCategory = () => {
     navigate("/image-form/create-category");
   };
 
-  // Effect to reset categories selection when onReset is called
+  // Reset categories selection when onReset is called
   // useEffect(() => {
-  //   if (onReset) {
-  //     setCategorySelect([]); // Reset the selected categories
-  //   }
+  // setCategorySelect([]); // Directly reset the selected categories
   // }, [onReset]); // Triggered when onReset is called
 
-  // Reset categories selection when onReset is called
+  // Effect to set up category map and reset selection when onReset is called
   useEffect(() => {
-    setCategorySelect([]); // Directly reset the selected categories
-  }, [onReset]); // Triggered when onReset is called
+    const map = new Map<string, string>();
+    categories.forEach((category) => map.set(category.id, category.name));
+    setCategoryMap(map);
+    setSelectedCategoryIds([]); // Reset the selected categories
+  }, [onReset, categories]);
 
-  const handleChange = (event: SelectChangeEvent<typeof categorySelect>) => {
+  const handleChange = (
+    event: SelectChangeEvent<typeof selectedCategoryIds>
+  ) => {
     const {
       target: { value },
     } = event;
     const newCategorySelect =
       typeof value === "string" ? value.split(",") : value;
-    setCategorySelect(newCategorySelect);
-    /* setValue("categoriesNames", newCategorySelect); */
+    setSelectedCategoryIds(newCategorySelect);
+    // Map category IDs to names for display
+    // const selectedNames = value.map(id => categoryMap.get(id) || "");
+    // Pass the IDs to the form register
+    registerForm.onChange({ target: { value: selectedCategoryIds } });
   };
 
   return (
@@ -87,17 +99,22 @@ InputSelectProps) => {
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
           multiple
-          value={categorySelect}
+          value={selectedCategoryIds}
           label="Category"
           onChange={handleChange}
-          input={<OutlinedInput label="Tag" />}
-          renderValue={(selected: string[]) => selected.join(", ")}
+          input={<OutlinedInput label="Category" />}
+          // renderValue={(selected: string[]) => selected.join(", ")}
+          renderValue={(selected) =>
+            selected.map((id) => categoryMap.get(id)).join(", ")
+          }
           MenuProps={MenuProps}
         >
-          {categories.map((category: Category) => (
-            <MenuItem key={category.id} value={category.name}>
+          {categories.map((category: CategoryWithId) => (
+            <MenuItem key={category.id} value={category.id}>
               {/* id or name */}
-              <Checkbox checked={categorySelect.indexOf(category.name) > -1} />
+              <Checkbox
+                checked={selectedCategoryIds.indexOf(category.id) > -1}
+              />
               <ListItemText primary={category.name} />
             </MenuItem>
           ))}

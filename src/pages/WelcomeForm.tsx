@@ -25,7 +25,7 @@ export const WelcomeForm = () => {
     console.log("boton presionado");
     try {
       //const createdUser = await createUser(data.userName);
-      await createUser(data.userName);
+      await createUser(data);
       /* const { id, ...cleanUser } = createdUser;
       setCurrentUser(cleanUser); */
       setIsUserCreated(true);

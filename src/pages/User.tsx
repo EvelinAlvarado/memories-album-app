@@ -65,16 +65,16 @@ export const User = () => {
 
     if (currentUser) {
       // Create a new user object with updated userName
-      const updatedUser = { ...currentUser, userName: data.userName };
+      const editedUser = { ...currentUser, userName: data.userName };
       // Call updateUser with the updated user object
-      await updateUser(updatedUser);
+      await updateUser(currentUser.id, editedUser);
 
-      setValue("userName", updatedUser.userName);
+      setValue("userName", editedUser.userName);
       setIsEditingName(false); // Exit edit mode after submitting
       //reset({ userName: updatedUser.userName }); // Reset the form with the updated username
 
       // Debug log to check currentUser after editing
-      console.log("Current User after edition:", updatedUser);
+      console.log("Current User after edition:", editedUser);
     }
   };
   return (

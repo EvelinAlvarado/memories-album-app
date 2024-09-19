@@ -1,65 +1,95 @@
-import { v4 as uuidv4 } from "uuid";
-import { api } from "./api";
-import { ImageCard } from "../types/ImageCard";
+import { db } from "../firebase/config";
+//import { api } from "./api";
+import { ImageCard, ImageCardWithId } from "../types/ImageCard";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  DocumentData,
+  DocumentReference,
+  getDocs,
+  QuerySnapshot,
+  updateDoc,
+} from "firebase/firestore";
 
-// Function to fetch imagesCards data from server
-const fetchImagesCards = async (): Promise<ImageCard[]> => {
+// Function to fetch imagesCards data from Firestore
+// This function retrieves all the documents from the "imagesCards" collection in Firestore
+const fetchImagesCards = async (): Promise<ImageCardWithId[]> => {
   try {
-    const response = await api.get("/imagesCards");
-    console.log("Fetched Image Cards:", response.status, response.data);
-    return response.data;
+    //Get a reference to collection "imagesCards" ("db"(config-firebase), name of collection)
+    const imagesCardsRef = collection(db, "imagesCards");
+
+    console.log(imagesCardsRef);
+    // Fetch all the documents in the "imagesCards" collection
+    const querySnapshot: QuerySnapshot<DocumentData> = await getDocs(
+      imagesCardsRef
+    );
+    console.log("Query Snapshot:", querySnapshot);
+    //Extract data from documents and build an array of imagesCards
+    const imagesCardsData: ImageCardWithId[] = querySnapshot.docs.map((doc) => {
+      // console.log("Document Data: ", doc.data()); // Document data without ID
+      // console.log("Document id:", doc.id); // Document ID
+      return {
+        id: doc.id,
+        ...(doc.data() as ImageCard),
+      };
+    });
+    console.log("Products Data:", imagesCardsData);
+
+    return imagesCardsData;
   } catch (error) {
-    console.error("Error fetching Images Cards: ", error);
-    throw new Error("Failed to fetch image cards.");
+    console.error("Error loading Images Cards: ", error);
+    throw new Error("Failed to get images cards.");
   }
 };
 
-// Function to create a new image card
+// This function adds a new document to the "imagesCards" collection in Firestore
 const createImageCard = async (
-  image: string,
-  description: string,
-  categoriesNames: string[],
-  title: string // Reordering the parameters so `title` is last as it’s optional (convention)
-): Promise<ImageCard> => {
-  const id = uuidv4();
+  newImageCard: ImageCard
+): Promise<DocumentReference<DocumentData>> => {
   try {
-    const response = await api.post("/imagesCards", {
-      id,
-      title, // Provide a default value if title is not present
-      image,
-      description,
-      categoriesNames,
-    });
-    console.log("Image card created:", response.data);
-    return response.data;
+    // Reference to the "imagesCards" collection
+    const collectionRef = collection(db, "imagesCards");
+    // Add the new document (newImageCard) to the collection
+    const docRef = await addDoc(collectionRef, newImageCard);
+    console.log("Image card written with ID: ", docRef.id);
+    // Return the reference to the newly created document
+    return docRef;
   } catch (error) {
     console.error("Error creating image card: ", error);
     throw new Error("Failed to create image card.");
   }
 };
 
-// Function to edit a image card
-const updateImageCard = async (imageCard: ImageCard): Promise<ImageCard> => {
+// This function updates a specific document in the "imagesCards" collection based on its ID
+const updateImageCard = async (
+  id: string,
+  updateData: Partial<ImageCard> // Partial allows to update only some fields of the ImageCard
+): Promise<void> => {
   try {
-    const response = await api.put(`/imagesCards/${imageCard.id}`, imageCard);
-    console.log("Image Card edited: ", response.data);
-    return response.data;
+    // Get a reference to the document to update (by its ID)
+    const docRef = doc(db, "imagesCards", id);
+    // Update the document with the provided data
+    await updateDoc(docRef, updateData);
+
+    console.log("Document (Image Card) updated: ", docRef.id);
   } catch (error) {
-    console.error("Error updating image card", error);
+    console.error("Error updating document:", error);
     throw new Error("Failed to update image card.");
   }
 };
 
-// Function to delete an image card
-const deleteImageCard = async (id: string): Promise<boolean> => {
+// This function removes a document from the "imagesCards" collection based on its ID
+const deleteImageCard = async (id: string): Promise<void> => {
   try {
-    console.log("Deleting image card with id: ", id);
-    const response = await api.delete(`/imagesCards/${id}`);
-    const isDeleted = response.status === 200;
-    if (isDeleted) {
-      console.log("Image card deleted successfully");
-    }
-    return isDeleted;
+    console.log("Deleting image card by id: ", id);
+    // Get a reference to the document to delete (by its ID)
+    const docRef = doc(db, "imagesCards", id);
+    // Delete the document
+    await deleteDoc(docRef);
+
+    console.log("Document deleted");
   } catch (error) {
     console.error("Error deleting category", error);
     throw new Error("Failed to delete image card.");

@@ -3,10 +3,10 @@ import Box from "@mui/material/Box";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 // import { useImageCard } from "../context/useContexts";
-import { ImageCard } from "../types/ImageCard";
+import { ImageCardWithId } from "../types/ImageCard";
 
 interface MasonryImageListProps {
-  images: ImageCard[];
+  images: ImageCardWithId[];
 }
 
 export const MasonryImageList = ({ images }: MasonryImageListProps) => {

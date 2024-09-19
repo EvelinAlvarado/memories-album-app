@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { Category } from "../types/Category";
+import { Category, CategoryWithId } from "../types/Category";
 import { categoryClientServices } from "../services/categoryService";
 
 /**
@@ -15,11 +15,15 @@ import { categoryClientServices } from "../services/categoryService";
  */
 
 export interface CategoryContextProps {
-  categories: Category[];
-  fetchCategories: () => Promise<void>;
-  createCategory: (name: string) => Promise<void>;
-  updateCategory: (category: Category) => Promise<void>;
-  deleteCategory: (id: string) => Promise<void>;
+  categories: CategoryWithId[];
+  fetchCategories: () => Promise<CategoryWithId[]>;
+  fetchCategoriesByIds: (categoryIds: string[]) => Promise<CategoryWithId[]>;
+  createCategory: (newCategory: Category) => Promise<CategoryWithId>;
+  updateCategory: (
+    categoryId: string,
+    updateData: Partial<Category>
+  ) => Promise<void>;
+  deleteCategory: (categoryId: string) => Promise<void>;
 }
 /**
  * `CategoryContext` is initialized with `undefined` to handle cases where the context
@@ -40,7 +44,7 @@ interface CategoryProviderProps {
 
 // `children` represents the nested content/components that this provider will wrap around
 export const CategoryProvider = ({ children }: CategoryProviderProps) => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryWithId[]>([]);
 
   //  Fetch categories from the server and update the local state.
   //  This effect runs once when the component mounts.
@@ -49,36 +53,64 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       const data = await categoryClientServices.fetchCategories();
       console.log("Fetching categories in context: ", data);
       setCategories(data);
+      return data;
     } catch (error) {
       console.error("Failed to fetch categories in context:", error);
+      throw error;
+    }
+  };
+
+  // Add the new fetchCategoriesByIds function
+  const fetchCategoriesByIds = async (categoryIds: string[]) => {
+    try {
+      const data = await categoryClientServices.fetchCategoriesByIds(
+        categoryIds
+      );
+      return data;
+    } catch (error) {
+      console.error("Failed to fetch categories by IDs:", error);
+      throw error;
     }
   };
 
   // Create a new category and update the local state.
   // Adds the new category to the current list of categories.
-  const createCategory = async (name: string) => {
+  const createCategory = async (category: Category) => {
     try {
-      const newCategory = await categoryClientServices.createCategory(name);
-      console.log("Create category in context: ", newCategory);
+      const newCategoryDoc = await categoryClientServices.createCategory(
+        category
+      );
+      console.log("Create category in context: ", newCategoryDoc);
+      const newCategory: CategoryWithId = {
+        ...category,
+        id: newCategoryDoc.id,
+      };
+      console.log("Created a new category in Context: ", newCategory);
       setCategories((prevCategories) => [...prevCategories, newCategory]);
+      return newCategory;
     } catch (error) {
       console.error("Failed to create category in context: ", error);
+      throw error;
     }
   };
 
   // Update an existing category and update the local state.
   // Replaces the old category with the updated one in the list.
-  const updateCategory = async (category: Category) => {
+  const updateCategory = async (
+    categoryId: string,
+    updateData: Partial<Category>
+  ) => {
     try {
-      const updateCategory = await categoryClientServices.updateCategory(
-        category
-      );
+      await categoryClientServices.updateCategory(categoryId, updateData);
       setCategories((prevCategories) =>
         prevCategories.map((cat) =>
-          cat.id === updateCategory.id ? updateCategory : cat
+          cat.id === categoryId ? { ...cat, ...updateData } : cat
         )
       );
-      console.log("Categories after to updateCategory function: ", categories);
+      console.log("Categories after to updateCategory function: ", {
+        categoryId,
+        updateData,
+      });
     } catch (error) {
       console.error("Failed to update category in context: ", error);
     }
@@ -86,11 +118,11 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
 
   // Delete a category by its ID and update the local state.
   // Removes the deleted category from the list.
-  const deleteCategory = async (id: string) => {
+  const deleteCategory = async (categoryId: string) => {
     try {
-      await categoryClientServices.deleteCategory(id);
+      await categoryClientServices.deleteCategory(categoryId);
       setCategories((prevCategories) =>
-        prevCategories.filter((cat) => cat.id !== id)
+        prevCategories.filter((cat) => cat.id !== categoryId)
       );
       console.log(
         "Categories after delete a Category in context: ",
@@ -104,7 +136,14 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
   // useEffect hook to fetch categories when the component mounts.
   // The empty dependency array `[]` ensures this effect runs only once.
   useEffect(() => {
-    fetchCategories();
+    const loadersCategories = async () => {
+      try {
+        await fetchCategories();
+      } catch (error) {
+        console.log("Failed to load categories", error);
+      }
+    };
+    loadersCategories();
   }, []);
 
   return (
@@ -112,6 +151,7 @@ export const CategoryProvider = ({ children }: CategoryProviderProps) => {
       value={{
         categories,
         fetchCategories,
+        fetchCategoriesByIds,
         createCategory,
         updateCategory,
         deleteCategory,

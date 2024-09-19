@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { ImageCard } from "../types/ImageCard";
+import { ImageCard, ImageCardWithId } from "../types/ImageCard";
 import { imagesCardsClientServices } from "../services/imageCardService";
 
 /**
@@ -14,16 +14,14 @@ import { imagesCardsClientServices } from "../services/imageCardService";
  * This allows you to access the data and perform additional logic as needed.
  */
 export interface ImageCardProps {
-  imagesCards: ImageCard[];
-  fetchImagesCards: () => Promise<void>;
-  createImageCard: (
-    image: string,
-    description: string,
-    categoriesNames: string[],
-    title: string
+  imagesCards: ImageCardWithId[];
+  fetchImagesCards: () => Promise<ImageCardWithId[]>;
+  createImageCard: (newImageCard: ImageCard) => Promise<ImageCardWithId>;
+  updateImageCard: (
+    imageCardId: string,
+    updateData: Partial<ImageCard>
   ) => Promise<void>;
-  updateImageCard: (imageCard: ImageCard) => Promise<void>;
-  deleteImageCard: (id: string) => Promise<void>;
+  deleteImageCard: (imageCardId: string) => Promise<void>;
 }
 
 /**
@@ -45,7 +43,7 @@ interface ImageCardProviderProps {
 
 // `children` represents the nested content/components that this provider will wrap around
 export const ImageCardProvider = ({ children }: ImageCardProviderProps) => {
-  const [imagesCards, setImagesCards] = useState<ImageCard[]>([]);
+  const [imagesCards, setImagesCards] = useState<ImageCardWithId[]>([]);
 
   //  Fetch imagesCard from the server and update the local state.
   //  This effect runs once when the component mounts.
@@ -54,48 +52,50 @@ export const ImageCardProvider = ({ children }: ImageCardProviderProps) => {
       const data = await imagesCardsClientServices.fetchImagesCards();
       console.log("Fetching images cards in context: ", data);
       setImagesCards(data);
+      return data;
     } catch (error) {
       console.error("Failed to fetch image cards in context:", error);
+      throw error;
     }
   };
 
   // Create a new image card and update the local state.
   // Adds the new image card to the current list of imagesCards.
-  const createImageCard = async (
-    image: string,
-    description: string,
-    categoriesNames: string[],
-    title: string
-  ) => {
+  const createImageCard = async (imageCard: ImageCard) => {
     try {
-      const newImageCard = await imagesCardsClientServices.createImageCard(
-        image,
-        description,
-        categoriesNames,
-        title
+      const newImageCardDoc = await imagesCardsClientServices.createImageCard(
+        imageCard
       );
-      console.log("Create image card in context: ", newImageCard);
+      const newImageCard: ImageCardWithId = {
+        ...imageCard,
+        id: newImageCardDoc.id,
+      };
+      console.log("Created a new image card in Context: ", newImageCard);
       setImagesCards((prevImagesCars) => [...prevImagesCars, newImageCard]);
+      return newImageCard;
     } catch (error) {
       console.error("Failed to create image card in context: ", error);
+      throw error;
     }
   };
 
   // Update an existing imageCard and update the local state.
   // Replaces the old imageCard with the updated one in the list.
-  const updateImageCard = async (imageCard: ImageCard) => {
+  const updateImageCard = async (
+    imageCardId: string,
+    updateData: Partial<ImageCard>
+  ) => {
     try {
-      const updateImageCard = await imagesCardsClientServices.updateImageCard(
-        imageCard
-      );
+      await imagesCardsClientServices.updateImageCard(imageCardId, updateData);
       setImagesCards((prevImagesCard) =>
         prevImagesCard.map((card) =>
-          card.id === updateImageCard.id ? updateImageCard : card
+          card.id === imageCardId ? { ...card, ...updateData } : card
         )
       );
       console.log(
         "Images Cards after to update imagesCard state: ",
-        imagesCards
+        imageCardId,
+        updateData
       );
     } catch (error) {
       console.error("Failed to update image card in context: ", error);
@@ -104,23 +104,28 @@ export const ImageCardProvider = ({ children }: ImageCardProviderProps) => {
 
   // Delete a imageCard by its ID and update the local state.
   // Removes the deleted imageCard from the list.
-  const deleteImageCard = async (id: string) => {
+  const deleteImageCard = async (imageCardId: string) => {
     try {
-      await imagesCardsClientServices.deleteImageCard(id);
-      setImagesCards((prevImagesCard) => {
-        const updatedImagesCards = prevImagesCard.filter(
-          (card) => card.id !== id
-        );
-        console.log("Images Cards after deletion:", updatedImagesCards); // Log after state update
-        return updatedImagesCards;
-      });
+      await imagesCardsClientServices.deleteImageCard(imageCardId);
+      setImagesCards((prevImagesCard) =>
+        prevImagesCard.filter((card) => card.id !== imageCardId)
+      );
+      console.log("Images Cards after deletion:", imagesCards); // Log after state update
+      //return updatedImagesCards;
     } catch (error) {
       console.error("Failed to delete image card in context:", error);
     }
   };
 
   useEffect(() => {
-    fetchImagesCards();
+    const loadersImagesCards = async () => {
+      try {
+        await fetchImagesCards();
+      } catch (error) {
+        console.log("Failed to load images cards", error);
+      }
+    };
+    loadersImagesCards();
   }, []);
   return (
     <ImageCardContext.Provider
