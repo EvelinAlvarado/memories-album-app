@@ -78,81 +78,83 @@ export const User = () => {
     }
   };
   return (
-    <div className="my-12 mx-4 h-full">
-      {/* Profile Header */}
-      <div className="flex flex-col items-center mb-8">
-        {/* Profile Image */}
-        <div className="relative">
-          <img
-            src={image}
-            alt="Profile"
-            className="rounded-full w-24 h-24 mb-4 object-cover cursor-pointer"
-            onClick={() => document.getElementById("imageUpload")?.click()} // Click en input oculto
-          />
-          <input
-            id="imageUpload"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="hidden"
-          />
-        </div>
+    <div className="my-12 mx-4 h-full w-full md:flex md:justify-center ">
+      <div className="flex flex-col gap-6 md:w-1/2 xl:w-[650px] md:text-center">
+        {/* Profile Header */}
+        <div className="flex flex-col items-center mb-8">
+          {/* Profile Image */}
+          <div className="relative">
+            <img
+              src={image}
+              alt="Profile"
+              className="rounded-full w-24 h-24 mb-4 object-cover cursor-pointer"
+              onClick={() => document.getElementById("imageUpload")?.click()} // Click en input oculto
+            />
+            <input
+              id="imageUpload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+          </div>
 
-        {/* Edit Name */}
-        <div className="flex items-center gap-2">
-          {isEditingName ? (
-            <form onSubmit={handleSubmit(onSubmit)} className="flex">
-              <div>
-                <input
-                  className="border-solid border-black border-2 rounded-md px-3.5 py-2.5"
-                  type="text"
-                  placeholder="Name"
-                  {...register("userName", {
-                    required: true,
-                    minLength: 1,
-                    maxLength: 20,
-                  })}
+          {/* Edit Name */}
+          <div className="flex items-center gap-2">
+            {isEditingName ? (
+              <form onSubmit={handleSubmit(onSubmit)} className="flex">
+                <div>
+                  <input
+                    className="border-solid border-black border-2 rounded-md px-3.5 py-2.5"
+                    type="text"
+                    placeholder="Name"
+                    {...register("userName", {
+                      required: true,
+                      minLength: 1,
+                      maxLength: 20,
+                    })}
+                  />
+                  {errors.userName && (
+                    <span className="text-red-500 flex items-center gap-2 pl-2">
+                      <LuAlertTriangle className="" />
+                      This field is required
+                    </span>
+                  )}
+                </div>
+                {/* Submit button to save the name */}
+                <ButtonCustom
+                  nameButton={LuCheckCircle}
+                  paddingX="px-1"
+                  bgColor="bg-transparent"
+                  textColor="text-gray-500"
+                  buttonType="submit"
                 />
-                {errors.userName && (
-                  <span className="text-red-500 flex items-center gap-2 pl-2">
-                    <LuAlertTriangle className="" />
-                    This field is required
-                  </span>
-                )}
+              </form>
+            ) : (
+              <div className="flex gap-0.5 items-center">
+                <h2 className="text-2xl font-semibold text-gray-800">
+                  {currentUser?.userName}
+                </h2>
+                {/* Button to enable editing */}
+                <ButtonCustom
+                  nameButton={LuPencilLine}
+                  paddingX="px-1"
+                  bgColor="bg-transparent"
+                  textColor="text-gray-500"
+                  onClickButton={() => setIsEditingName(true)}
+                />
               </div>
-              {/* Submit button to save the name */}
-              <ButtonCustom
-                nameButton={LuCheckCircle}
-                paddingX="px-1"
-                bgColor="bg-transparent"
-                textColor="text-gray-500"
-                buttonType="submit"
-              />
-            </form>
-          ) : (
-            <div className="flex gap-0.5 items-center">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                {currentUser?.userName}
-              </h2>
-              {/* Button to enable editing */}
-              <ButtonCustom
-                nameButton={LuPencilLine}
-                paddingX="px-1"
-                bgColor="bg-transparent"
-                textColor="text-gray-500"
-                onClickButton={() => setIsEditingName(true)}
-              />
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Logout */}
-      <div className="flex flex-row justify-between items-center mt-8">
-        <p>Logout</p>
-        <button onClick={handleClickOut} className="p-4 text-lg">
-          <LuLogOut />
-        </button>
+        {/* Logout */}
+        <div className="flex flex-row justify-between items-center mt-8">
+          <p>Logout</p>
+          <button onClick={handleClickOut} className="p-4 text-lg">
+            <LuLogOut />
+          </button>
+        </div>
       </div>
     </div>
   );

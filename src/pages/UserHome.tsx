@@ -21,7 +21,7 @@ export const UserHome = () => {
       <header className="flex flex-row justify-between px-6">
         <div className="leading-tight">
           <p className="text-[24px] text-left ">Hi, {userName}</p>
-          <p className="text-[24px] text-left ">Think back to memories...</p>
+          <p className="text-[24px] text-left ">Think back to...</p>
         </div>
         <div className="w-20 h-full my-auto text-right">
           <ButtonCustom

@@ -4,6 +4,7 @@ import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
 // import { useImageCard } from "../context/useContexts";
 import { ImageCardWithId } from "../types/ImageCard";
+import { useMediaQuery } from "@mui/material";
 
 interface MasonryImageListProps {
   images: ImageCardWithId[];
@@ -14,13 +15,26 @@ export const MasonryImageList = ({
   images,
   categoriesFilteredNames = [],
 }: MasonryImageListProps) => {
-  /* const { imagesCards } = useImageCard(); */
   const reversedImages = [...images].reverse();
   const navigate = useNavigate();
 
+  // Material UI Hook to detect screen size
+  const isMdScreen = useMediaQuery("(min-width: 768px)");
+  const isLgScreen = useMediaQuery("(min-width: 1024px)");
+  const is2xlScreen = useMediaQuery("(min-width: 1536px)");
+
+  let cols = 2;
+  if (isMdScreen && !isLgScreen) {
+    cols = 4;
+  } else if (isLgScreen && !is2xlScreen) {
+    cols = 5;
+  } else if (is2xlScreen) {
+    cols = 10;
+  }
+
   const handleImageClick = (id: string) => {
     console.log("image was clicked", id);
-    // navigate(`/gallery/:categories/${id}`);
+
     const categoriesPath =
       categoriesFilteredNames.length > 0
         ? `${categoriesFilteredNames.join("+")}`
@@ -32,7 +46,7 @@ export const MasonryImageList = ({
       sx={{ width: "100%", overflowY: "scroll" }}
       className="h-[calc(100vh-130px)]"
     >
-      <ImageList variant="masonry" cols={2} gap={4} className="relative">
+      <ImageList variant="masonry" cols={cols} gap={4} className="relative">
         {reversedImages.map((item) => (
           <ImageListItem
             key={item.id}

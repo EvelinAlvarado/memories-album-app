@@ -34,7 +34,7 @@ export const CategoryList = ({
 
   return (
     <div>
-      <ul className="flex gap-2 overflow-x-scroll pb-2">
+      <ul className="flex gap-2 overflow-auto pb-2">
         {filteredCategories.length === 0 ? (
           <p className="tex-[14px] text-left">No categories found</p>
         ) : (

@@ -28,10 +28,7 @@ function App() {
             path="/gallery/:categories?/:imageId"
             element={<ImageCard />}
           />
-          <Route
-            path="/gallery/:categories?/:imageId/image"
-            element={<Image />}
-          />
+
           <Route
             path="/album/:categoryName/:categoryId"
             element={<CategoryAlbum />}
@@ -43,6 +40,10 @@ function App() {
           />
           <Route path="/user/:userId" element={<User />} />
         </Route>
+        <Route
+          path="/gallery/:categories?/:imageId/image"
+          element={<Image />}
+        />
       </Routes>
 
       {/* </div> */}

@@ -41,9 +41,12 @@ export const WelcomeForm = () => {
     }
   }, [currentUser, isUserCreated, navigate]);
   return (
-    <div className="h-screen px-6 py-12 flex flex-col gap-14 w-screen">
+    <div className="h-screen px-6 py-12 flex flex-col gap-14 w-screen md:items-center">
       <span className="text-[26px]">Welcome!</span>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-11">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-11 md:w-1/2 xl:w-[650px]"
+      >
         <div>
           <input
             className="w-full border-solid border-black border-2 rounded-md px-3.5 py-2.5"

@@ -72,79 +72,81 @@ export const ImageForm = () => {
   return (
     <Box
       component="form"
-      className="h-full overflow-auto flex flex-col pt-8 px-6 gap-6"
+      className="h-full overflow-auto pt-8 px-6 gap-6 w-full md:flex md:justify-center md:items-center"
       noValidate
       autoComplete="off"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h2 className="text-[24px] text-black font-semibold mb-4">
-        {imageId ? "Edit Image" : "Add New Image"}
-      </h2>
-      <div>
-        <TextField
-          {...register("title", {
-            required: true,
-            minLength: 3,
-            maxLength: 40,
-          })}
-          className="w-full"
-          label="Title"
-          variant="outlined"
-        />
-        {errors.title && (
-          <p className="text-red-500 flex items-center gap-2 pl-2">
-            <LuAlertTriangle className="" />
-            This field is required
-          </p>
-        )}
-      </div>
-      <div>
-        <TextField
-          {...register("image", {
-            required: true,
-            minLength: 3,
-            maxLength: 500,
-          })}
-          className="w-full"
-          label="Url"
-          variant="outlined"
-        />
-        {errors.image && (
-          <p className="text-red-500 flex items-center gap-2 pl-2">
-            <LuAlertTriangle className="" />
-            This field is required
-          </p>
-        )}
-      </div>
-      <div>
-        <TextField
-          {...register("description", {
-            required: true,
-            minLength: 3,
-            maxLength: 1000,
-          })}
-          className="w-full"
-          label="Description"
-          variant="outlined"
-          multiline
-          rows={6}
-        />
-        {errors.description && (
-          <p className="text-red-500 flex items-center gap-2 pl-2">
-            <LuAlertTriangle className="" />
-            This field is required
-          </p>
-        )}
-      </div>
+      <div className="flex flex-col gap-6 md:w-1/2 xl:w-[650px] md:text-center">
+        <h2 className="text-[24px] text-black font-semibold mb-4">
+          {imageId ? "Edit Image" : "Add New Image"}
+        </h2>
+        <div>
+          <TextField
+            {...register("title", {
+              required: true,
+              minLength: 3,
+              maxLength: 40,
+            })}
+            className="w-full"
+            label="Title"
+            variant="outlined"
+          />
+          {errors.title && (
+            <p className="text-red-500 flex items-center gap-2 pl-2">
+              <LuAlertTriangle className="" />
+              This field is required
+            </p>
+          )}
+        </div>
+        <div>
+          <TextField
+            {...register("image", {
+              required: true,
+              minLength: 3,
+              maxLength: 500,
+            })}
+            className="w-full"
+            label="Url"
+            variant="outlined"
+          />
+          {errors.image && (
+            <p className="text-red-500 flex items-center gap-2 pl-2">
+              <LuAlertTriangle className="" />
+              This field is required
+            </p>
+          )}
+        </div>
+        <div>
+          <TextField
+            {...register("description", {
+              required: true,
+              minLength: 3,
+              maxLength: 1000,
+            })}
+            className="w-full"
+            label="Description"
+            variant="outlined"
+            multiline
+            rows={6}
+          />
+          {errors.description && (
+            <p className="text-red-500 flex items-center gap-2 pl-2">
+              <LuAlertTriangle className="" />
+              This field is required
+            </p>
+          )}
+        </div>
 
-      {/* The InputSelect component for category selection */}
-      <InputSelect
-        registerForm={register("categoriesIds", { required: true })}
-        errorForm={errors.categoriesIds}
-        onReset={() => reset()}
-      />
+        {/* The InputSelect component for category selection */}
+        <InputSelect
+          registerForm={register("categoriesIds", { required: true })}
+          errorForm={errors.categoriesIds}
+          onReset={() => reset()}
+        />
 
-      <ButtonCustom nameButton={"Save"} buttonType="submit" />
+        <ButtonCustom nameButton={"Save"} buttonType="submit" />
+      </div>
     </Box>
   );
 };

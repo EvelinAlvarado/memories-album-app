@@ -22,18 +22,22 @@ export const Image = () => {
     navigate(`/gallery${categoriesPath}/${imageId}`);
   };
   return (
-    <div className="h-full flex justify-center items-center py-4 relative">
-      <div className="absolute top-6 right-3">
+    <div className="h-screen w-screen flex justify-center items-center relative bg-black">
+      <div className="absolute top-6 right-6 z-10">
         <ButtonCustom
           nameButton={LuX}
           textSize="text-[22px]"
-          textColor="text-black"
+          textColor="text-white"
           onClickButton={handleClose}
           bgColor="bg-transparent"
-          hoverBgColor="bg-black/15"
+          hoverBgColor="bg-white/25"
         />
       </div>
-      <img src={imageCard.image} alt={imageCard.title} />
+      <img
+        className="max-w-full max-h-full object-contain"
+        src={imageCard.image}
+        alt={imageCard.title}
+      />
     </div>
   );
 };

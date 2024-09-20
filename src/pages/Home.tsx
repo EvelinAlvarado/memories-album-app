@@ -19,7 +19,7 @@ export const Home = () => {
       ></div>
       <div className="flex-grow flex items-center justify-center px-6 py-12">
         <div className="flex flex-col items-center">
-          <span className="pb-12 text-[26px] text-left pr-16">
+          <span className="pb-12 text-[26px] text-left md:text-center pr-16 md:pr-0">
             Together, Let's Create Unforgettable Moments of Your Life
           </span>
           <ButtonCustom

@@ -49,7 +49,7 @@ export const Gallery = () => {
       <div className="flex flex-row justify-between mt-4 mb-2 mx-4">
         <div className="flex items-center">
           <FilterCategories onFilterChange={handleFilterChange} />
-          <p className="ml-4 text-[24px]">All Photos</p>
+          <p className="ml-4 text-[24px]">Gallery</p>
         </div>
         <div className="w-20 my-auto text-right overflow-auto">
           <ButtonCustom
@@ -58,7 +58,6 @@ export const Gallery = () => {
             textSize="text-[24px]"
             paddingY="py-3"
           />
-          {/* snackbar after submitted photo */}
         </div>
       </div>
       {filteredImages.length === 0 ? (

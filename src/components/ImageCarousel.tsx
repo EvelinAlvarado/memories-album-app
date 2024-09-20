@@ -74,7 +74,7 @@ export const ImageCarousel = () => {
               <div key={index} className="h-full px-2">
                 <div className="h-full flex justify-center items-center">
                   <img
-                    className="rounded-lg h-[calc(100vh-350px)] w-full object-cover"
+                    className="rounded-lg h-[calc(100vh-350px)] md:h-[calc(100vh-370px)] w-full object-cover"
                     src={image}
                     alt={`default-img-${index}`}
                   />
@@ -85,7 +85,7 @@ export const ImageCarousel = () => {
               <div key={imagesCards[index].id} className="h-full px-2">
                 <div className="h-full flex justify-center items-center relative">
                   <img
-                    className="rounded-lg h-[calc(100vh-360px)] w-full object-cover"
+                    className="rounded-lg h-[calc(100vh-360px)] md:h-[calc(100vh-370px)] w-full object-cover"
                     src={imagesCards[index].image}
                     alt={imagesCards[index].title}
                   />
