@@ -18,7 +18,10 @@ export const ImageCard = () => {
     null
   );
   const navigate = useNavigate();
-  const { imageId } = useParams<{ imageId: string }>();
+  const { imageId, categories: categoriesPath } = useParams<{
+    imageId: string;
+    categories?: string;
+  }>();
   const { imagesCards, deleteImageCard } = useImageCard();
   const imageCard = imagesCards.find((card) => card.id === imageId);
   // State to store a map a categories (ID --> categoryName)
@@ -43,7 +46,9 @@ export const ImageCard = () => {
 
   const handleClickShowImage = () => {
     console.log("click");
-    navigate(`/gallery/${imageId}/image`);
+    // navigate(`/gallery/${imageId}/image`);
+    const categoriesPathPart = categoriesPath ? `/${categoriesPath}` : "";
+    navigate(`/gallery${categoriesPathPart}/${imageId}/image`);
   };
   const handleClickOptions = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

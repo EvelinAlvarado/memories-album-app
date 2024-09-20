@@ -10,6 +10,7 @@ import { ImageCard } from "./pages/ImageCard";
 import { Image } from "./pages/Image";
 import { NewCategoryForm } from "./pages/NewCategoryForm";
 import { CategoryAlbum } from "./pages/CategoryAlbum";
+import { SearchResults } from "./pages/SearchResults";
 function App() {
   return (
     <div className="h-screen">
@@ -20,17 +21,21 @@ function App() {
         <Route path="/welcome" element={<WelcomeForm />} />
         <Route element={<Layout />}>
           <Route path="/user-home/:userId" element={<UserHome />} />
+          <Route path="/search-results" element={<SearchResults />} />
           <Route path="/gallery" element={<Gallery />} />
-          {/* <Route
-            path="/gallery/album/:categoryName"
-            element={<CategoryAlbum />}
-          /> */}
+          <Route path="/gallery/:categories" element={<Gallery />} />
           <Route
-            path="/gallery/album/:categoryId"
+            path="/gallery/:categories?/:imageId"
+            element={<ImageCard />}
+          />
+          <Route
+            path="/gallery/:categories?/:imageId/image"
+            element={<Image />}
+          />
+          <Route
+            path="/album/:categoryName/:categoryId"
             element={<CategoryAlbum />}
           />
-          <Route path="/gallery/:imageId" element={<ImageCard />} />
-          <Route path="/gallery/:imageId/image" element={<Image />} />
           <Route path="/image-form/:imageId?" element={<ImageForm />} />
           <Route
             path="/image-form/create-category"

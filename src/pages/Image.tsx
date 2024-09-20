@@ -4,7 +4,10 @@ import { useImageCard } from "../context/useContexts";
 import { ButtonCustom } from "../components/ButtonCustom";
 
 export const Image = () => {
-  const { imageId } = useParams<{ imageId: string }>();
+  const { imageId, categories } = useParams<{
+    imageId: string;
+    categories: string;
+  }>();
   const { imagesCards } = useImageCard();
   const navigate = useNavigate();
   const imageCard = imagesCards.find((card) => card.id === imageId);
@@ -14,7 +17,9 @@ export const Image = () => {
   }
 
   const handleClose = () => {
-    navigate(`/gallery/${imageId}`);
+    // navigate(`/gallery/${imageId}`);
+    const categoriesPath = categories ? `/${categories}` : "";
+    navigate(`/gallery${categoriesPath}/${imageId}`);
   };
   return (
     <div className="h-full flex justify-center items-center py-4 relative">

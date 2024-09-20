@@ -17,9 +17,11 @@ export const CategoryList = ({
   const navigate = useNavigate();
 
   const handleClickCategory =
-    (categoryId: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
+    (categoryId: string, categoryName: string) =>
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault(); // Prevents default behavior if needed
-      navigate(`/gallery/album/${categoryId}`);
+      const formattedCategory = categoryName.toLowerCase().replace(/\s+/g, "-");
+      navigate(`/album/${formattedCategory}/${categoryId}`);
     };
 
   console.log("categories: ", categories);
@@ -39,7 +41,7 @@ export const CategoryList = ({
           filteredCategories.map((category, index) => (
             <li key={category.id}>
               <ButtonCustom
-                onClickButton={handleClickCategory(category.id)}
+                onClickButton={handleClickCategory(category.id, category.name)}
                 nameButton={category.name}
                 textSize="text-[14px]"
                 paddingY="py-1.5"

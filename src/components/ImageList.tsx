@@ -7,16 +7,25 @@ import { ImageCardWithId } from "../types/ImageCard";
 
 interface MasonryImageListProps {
   images: ImageCardWithId[];
+  categoriesFilteredNames?: string[];
 }
 
-export const MasonryImageList = ({ images }: MasonryImageListProps) => {
+export const MasonryImageList = ({
+  images,
+  categoriesFilteredNames = [],
+}: MasonryImageListProps) => {
   /* const { imagesCards } = useImageCard(); */
   const reversedImages = [...images].reverse();
   const navigate = useNavigate();
 
   const handleImageClick = (id: string) => {
     console.log("image was clicked", id);
-    navigate(`/gallery/${id}`);
+    // navigate(`/gallery/:categories/${id}`);
+    const categoriesPath =
+      categoriesFilteredNames.length > 0
+        ? `${categoriesFilteredNames.join("+")}`
+        : "photo";
+    navigate(`/gallery/${categoriesPath}/${id}`);
   };
   return (
     <Box

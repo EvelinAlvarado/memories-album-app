@@ -4,7 +4,10 @@ import { useState } from "react";
 import { useCategoryList } from "../context/useContexts";
 
 interface FilterCategoriesProps {
-  onFilterChange: (selectedCategories: string[]) => void;
+  onFilterChange: (
+    selectedCategories: string[],
+    selectedCategoryNames: string[]
+  ) => void;
 }
 
 export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
@@ -18,15 +21,19 @@ export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  /* use here useparams? */
-  const handleCheckboxChange = (categoryName: string) => {
-    setSelectedCategories((prevSelected) => {
-      const isSelected = prevSelected.includes(categoryName);
-      const updatedSelected = isSelected
-        ? prevSelected.filter((name) => name !== categoryName)
-        : [...prevSelected, categoryName];
 
-      onFilterChange(updatedSelected); // Pass the selected categories up to the parent component
+  const handleCheckboxChange = (categoryId: string) => {
+    setSelectedCategories((prevSelected) => {
+      const isSelected = prevSelected.includes(categoryId);
+      const updatedSelected = isSelected
+        ? prevSelected.filter((id) => id !== categoryId)
+        : [...prevSelected, categoryId];
+
+      const selectedCategoryNames = categories
+        .filter((cat) => updatedSelected.includes(cat.id))
+        .map((cat) => cat.name);
+
+      onFilterChange(updatedSelected, selectedCategoryNames); // Pass the selected categories up to the parent component
       return updatedSelected;
     });
   };
@@ -59,8 +66,8 @@ export const FilterCategories = ({ onFilterChange }: FilterCategoriesProps) => {
                 key={category.id}
                 control={
                   <Checkbox
-                    checked={selectedCategories.includes(category.name)}
-                    onChange={() => handleCheckboxChange(category.name)}
+                    checked={selectedCategories.includes(category.id)}
+                    onChange={() => handleCheckboxChange(category.id)}
                   />
                 }
                 label={category.name}
